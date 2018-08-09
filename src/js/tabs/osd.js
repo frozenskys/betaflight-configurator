@@ -2070,6 +2070,7 @@ TABS.osd.initialize = function (callback) {
                   FONT.preview($preview);
                   LogoManager.drawPreview();
                   updateOsdView();
+                  $('a.read_font').removeClass('disabled');
               });
           }
       });
