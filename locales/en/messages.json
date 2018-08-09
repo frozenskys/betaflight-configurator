@@ -3257,6 +3257,9 @@
     "osdSetupUploadFont": {
         "message": "Upload Font"
     },
+    "osdSetupDownloadFont": {
+        "message": "Download Font"
+    },
     "osdSetupSave": {
         "message": "Save"
     },
