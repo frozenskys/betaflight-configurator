@@ -36,17 +36,19 @@ var LogoManager = LogoManager || {
  * @param {FONT} font
  * @param {number} logoStartIndex
  */
-LogoManager.init = function (font, logoStartIndex) {
+LogoManager.init = function (font) {
+    // deps from osd.js
+    this.font = font;
+    this.logoStartIndex = font.metadata.boot_logo_offset;
+    if(this.font.metadata.is_legacy){this.constants.TILES_NUM_VERT = 4} else { this.constants.TILES_NUM_VERT = 3 }
     // custom logo image constraints
     this.constraints = {
         // test for image size
         imageSize: {
             el: "#font-logo-info-size",
             // calculate logo image size at runtime as it may change conditionally in the future
-            expectedWidth: font.constants.SIZES.CHAR_WIDTH
-                * this.constants.TILES_NUM_HORIZ,
-            expectedHeight: font.constants.SIZES.CHAR_HEIGHT
-                * this.constants.TILES_NUM_VERT,
+            expectedWidth: font.constants.SIZES.CHAR_WIDTH * this.constants.TILES_NUM_HORIZ,
+            expectedHeight: font.constants.SIZES.CHAR_HEIGHT * this.constants.TILES_NUM_VERT,
             /**
              * @param {HTMLImageElement} img
              */
@@ -96,9 +98,6 @@ LogoManager.init = function (font, logoStartIndex) {
         },
     };
 
-    // deps from osd.js
-    this.font = font;
-    this.logoStartIndex = logoStartIndex;
     // inject logo size variables for dynamic translation strings
     i18n.addResources({
         logoWidthPx: "" + this.constraints.imageSize.expectedWidth,
@@ -116,6 +115,8 @@ LogoManager.init = function (font, logoStartIndex) {
         .width(this.constraints.imageSize.expectedWidth)
         .height(this.constraints.imageSize.expectedHeight);
     this.resetImageInfo();
+    $('#font-logo-info-size').removeClass('i18n-replaced');
+    i18n.localizePage();
 };
 
 LogoManager.resetImageInfo = function () {
@@ -273,7 +274,7 @@ LogoManager.replaceLogoInFont = function (img) {
  */
 LogoManager.drawPreview = function () {
     var $el = this.elements.$preview.empty();
-    for (var i = this.logoStartIndex, I = this.font.constants.MAX_CHAR_COUNT; i < I; i++) {
+    for (var i = this.logoStartIndex, I = this.font.metadata.last_char; i < I; i++) {
         var url = this.font.data.character_image_urls[i];
         $el.append('<img src="' + url + '" title="0x' + i.toString(16) + '"></img>');
     }

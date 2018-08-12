@@ -1,7 +1,7 @@
 'use strict';
 
 var SYM = SYM || {};
-SYM.BLANK = 0x20;
+SYM.BLANK = 0x00;
 SYM.VOLT = 0x06;
 SYM.RSSI = 0x01;
 SYM.AH_RIGHT = 0x02;
@@ -57,12 +57,30 @@ FONT.initData = function() {
   }
 };
 
+FONT.initMetaData = function() {
+  if (FONT.metadata) {
+    return;
+  }
+  FONT.metadata = {
+    is_legacy: true,
+    metadata_version: 0,
+    firmware_type_identifier: 0,
+    firmware_font_version: 0,
+    font_id: 0,
+    ascii_offset: 65,
+    symbol_offset: 0,
+    pilot_logo_offset: 0,
+    boot_logo_offset: 0xA0,
+    crc_value: 0
+  }
+};
+
 FONT.constants = {
   MAX_CHAR_COUNT: 256,
   SIZES: {
     /** NVM ram size for one font char, actual character bytes **/
     MAX_NVM_FONT_CHAR_SIZE: 54,
-    /** NVM ram field size for one font char, last 10 bytes dont matter **/
+    /** NVM ram field size for one font char, last 10 bytes not used for character **/
     MAX_NVM_FONT_CHAR_FIELD_SIZE: 64,
     CHAR_HEIGHT: 18,
     CHAR_WIDTH: 12,
@@ -79,8 +97,45 @@ FONT.constants = {
   },
 };
 
+FONT.ClearData = function() {
+  // clear local data
+  FONT.data.characters.length = 0;
+  FONT.data.characters_bytes.length = 0;
+  FONT.data.character_image_urls.length = 0;
+  // reset logo image info when font data is changed
+  LogoManager.resetImageInfo();
+}
+
+FONT.setMetadata = function(data) {
+  if(data[0] == 255){
+    FONT.metadata.is_legacy = false;
+    FONT.metadata.metadata_version = data[1];
+    FONT.metadata.firmware_type_identifier = data[2];
+    FONT.metadata.firmware_font_version = data[3];
+    FONT.metadata.font_id = data[4];
+    FONT.metadata.ascii_offset = data[5];
+    FONT.metadata.symbol_offset = data[6];
+    FONT.metadata.pilot_logo_offset = data[7];
+    FONT.metadata.boot_logo_offset = data[8];
+    FONT.metadata.last_char = 255;
+    FONT.metadata.crc_value = data[63];
+  } else {
+    FONT.metadata.is_legacy = true;
+    FONT.metadata.metadata_version = 0;
+    FONT.metadata.firmware_type_identifier = 0;
+    FONT.metadata.firmware_font_version = 0;
+    FONT.metadata.font_id = 0;
+    FONT.metadata.ascii_offset = 0x20;
+    FONT.metadata.symbol_offset = 0;
+    FONT.metadata.pilot_logo_offset = 0;
+    FONT.metadata.boot_logo_offset = 0xA0;
+    FONT.metadata.last_char = 255;
+    FONT.metadata.crc_value = 0;
+  }
+}
+
 /**
- * Each line is composed of 8 asci 1 or 0, representing 1 bit each for a total of 1 byte per line
+ * Each line is composed of 8 ascii 1 or 0, representing 1 bit each for a total of 1 byte per line
  */
 FONT.parseMCMFontFile = function(data) {
   var data = data.split("\n");
@@ -118,18 +173,10 @@ FONT.parseMCMFontFile = function(data) {
     character_bytes.push(parseInt(line, 2));
   }
   // push the last char
+  FONT.setMetadata(character_bytes)
   pushChar();
   return FONT.data.characters;
 };
-
-FONT.ClearData = function() {
-    // clear local data
-    FONT.data.characters.length = 0;
-    FONT.data.characters_bytes.length = 0;
-    FONT.data.character_image_urls.length = 0;
-    // reset logo image info when font data is changed
-    LogoManager.resetImageInfo();
-}
 
 FONT.parseEEPROMCharData = function(data) {
   var character_bits = [];
@@ -247,9 +294,16 @@ FONT.download = function($progress) {
   });
 };
 
+FONT.checkEEPROMVersion = function() {
+  return MSP.promise(MSPCodes.MSP_OSD_CHAR_READ, [256])
+  .then(function(info){
+    FONT.setMetadata(info.data);
+  });
+};
+
 FONT.preview = function($el) {
   $el.empty()
-  for (var i = 0; i < SYM.LOGO; i++) {
+  for (var i = 0; i < FONT.metadata.boot_logo_offset; i++) {
     var url = FONT.data.character_image_urls[i];
     $el.append('<img src="'+url+'" title="0x'+i.toString(16)+'"></img>');
   }
@@ -316,11 +370,21 @@ OSD.generateTemperaturePreview = function(osd_data, temperature) {
   return preview;
 }
 
+OSD.ascii_shift = function(str){
+  var shift = FONT.metadata.ascii_offset - ' '.charCodeAt(0);
+  var result = '';
+  for (var i = 0; i < str.length; i++) {
+    var new_char = (str[i].charCodeAt()) + shift;
+    result += String.fromCharCode(new_char);
+  }
+  return result
+}
+
 OSD.generateCraftName = function(osd_data) {
     var preview = 'CRAFT_NAME';
     if (CONFIG.name != '')
         preview = CONFIG.name.toUpperCase();
-    return preview;
+    return OSD.ascii_shift(preview);
 }
 
 OSD.constants = {
@@ -755,7 +819,9 @@ OSD.constants = {
       default_position: -1,
       draw_order: 220,
       positionable: true,
-      preview: 'LOW VOLTAGE'
+      preview: function(osd_data) {
+        return OSD.ascii_shift('LOW VOLTAGE');
+      }
     },
     ESC_TEMPERATURE: {
       name: 'ESC_TEMPERATURE',
@@ -1528,7 +1594,8 @@ TABS.osd.initialize = function (callback) {
         fontbuttons.append($('<button>', { class: "load_font_file", i18n: "osdSetupOpenFont" }));
 
         // must invoke before i18n.localizePage() since it adds translation keys for expected logo size
-        LogoManager.init(FONT, SYM.LOGO);
+        FONT.initMetaData();
+        LogoManager.init(FONT);
 
         // translate to user-selected language
         i18n.localizePage();
@@ -1536,7 +1603,7 @@ TABS.osd.initialize = function (callback) {
         // Open modal window
         OSD.GUI.jbox = new jBox('Modal', {
             width: 720,
-            height: 455,
+            height: 470,
             closeButton: 'title',
             animation: false,
             attach: $('#fontmanager'),
@@ -1865,12 +1932,13 @@ TABS.osd.initialize = function (callback) {
             }
             // clear the buffer
             for(var i = 0; i < OSD.data.display_size.total; i++) {
-              OSD.data.preview.push([null, ' '.charCodeAt(0)]);
+              OSD.data.preview.push([null, SYM.BLANK]);
             }
             // logo first, so it gets overwritten by subsequent elements
             if (OSD.data.preview_logo) {
-              var x = 160;
-              for (var i = 1; i < 5; i++) {
+              var x = FONT.metadata.boot_logo_offset;
+              var logo_lines = Math.round((FONT.metadata.last_char - FONT.metadata.boot_logo_offset)/24)
+              for (var i = 1; i <= logo_lines; i++) {
                 for (var j = 3; j < 27; j++)
                     OSD.data.preview[i * 30 + j] = [{name: 'LOGO', positionable: false}, x++];
               }
@@ -2017,6 +2085,7 @@ TABS.osd.initialize = function (callback) {
 
         // init structs once, also clears current font
         FONT.initData();
+        FONT.initMetaData();
 
         var $fontpresets = $('.fontpresets')
         $fontpresets.change(function(e) {
@@ -2024,6 +2093,7 @@ TABS.osd.initialize = function (callback) {
           $.get('./resources/osd/' + $font.data('font-file') + '.mcm', function(data) {
             FONT.parseMCMFontFile(data);
             FONT.preview($preview);
+            LogoManager.init(FONT);
             LogoManager.drawPreview();
             updateOsdView();
           });
@@ -2041,6 +2111,7 @@ TABS.osd.initialize = function (callback) {
         $('button.load_font_file').click(function() {
           FONT.openFontFile().then(function() {
             FONT.preview($preview);
+            LogoManager.init(FONT);
             LogoManager.drawPreview();
             updateOsdView();
           }).catch(error => console.error(error));
@@ -2063,11 +2134,13 @@ TABS.osd.initialize = function (callback) {
           if (!GUI.connect_lock) { // button disabled while flashing is in progress
               $('a.read_font').addClass('disabled');
               $('.progressLabel').text('Downloading...');
+              FONT.checkEEPROMVersion();
               FONT.download($('.progress').val(0)).then(function() {
                 var msg = 'Downloaded all ' + FONT.data.characters.length + ' characters';
                   console.log(msg);
                   $('.progressLabel').text(msg);
                   FONT.preview($preview);
+                  LogoManager.init(FONT);
                   LogoManager.drawPreview();
                   updateOsdView();
                   $('a.read_font').removeClass('disabled');
