@@ -426,7 +426,9 @@ OSD.constants = {
       default_position: -29,
       draw_order: 20,
       positionable: true,
-      preview: FONT.symbol(SYM.BATTERY) + '16.8' + FONT.symbol(SYM.VOLT)
+      preview: function(osd_data) {
+        return FONT.symbol(SYM.BATTERY) + OSD.ascii_shift('16.8'); + FONT.symbol(SYM.VOLT);
+      }
     },
     RSSI_VALUE: {
       name: 'RSSI_VALUE',
@@ -434,13 +436,17 @@ OSD.constants = {
       default_position: -59,
       draw_order: 30,
       positionable: true,
-      preview: FONT.symbol(SYM.RSSI) + '99'
+      preview: function(osd_data) {
+        return FONT.symbol(SYM.RSSI) + OSD.ascii_shift('99');
+      }
     },
     TIMER: {
       name: 'TIMER',
       default_position: -39,
       positionable: true,
-      preview: FONT.symbol(SYM.ON_M) + ' 11:11'
+      preview: function(osd_data) {
+        return FONT.symbol(SYM.ON_M) + OSD.ascii_shift(' 11:11');
+      }
     },
     THROTTLE_POSITION: {
       name: 'THROTTLE_POSITION',
@@ -448,33 +454,43 @@ OSD.constants = {
       default_position: -9,
       draw_order: 110,
       positionable: true,
-      preview: FONT.symbol(SYM.THR) + FONT.symbol(SYM.THR1) + ' 69'
+      preview: function(osd_data) {
+        return FONT.symbol(SYM.THR) + FONT.symbol(SYM.THR1) + OSD.ascii_shift(' 69');
+      }
     },
     CPU_LOAD: {
       name: 'CPU_LOAD',
       default_position: 26,
       positionable: true,
-      preview: '15'
+      preview: function(osd_data) {
+        return OSD.ascii_shift('15');
+      }
     },
     VTX_CHANNEL: {
       name: 'VTX_CHANNEL',
       default_position: 1,
       draw_order: 120,
       positionable: true,
-      preview: 'R:2:1'
+      preview: function(osd_data) {
+        return OSD.ascii_shift('R:2:1');
+      }
     },
     VOLTAGE_WARNING: {
       name: 'VOLTAGE_WARNING',
       default_position: -80,
       positionable: true,
-      preview: 'LOW VOLTAGE'
+      preview: function(osd_data) {
+        return OSD.ascii_shift('LOW VOLTAGE');
+      }
     },
     ARMED: {
       name: 'ARMED',
       desc: 'osdDescElementArmed',
       default_position: -107,
       positionable: true,
-      preview: 'ARMED'
+      preview: function(osd_data) {
+        return OSD.ascii_shift('ARMED');
+      }
     },
     DISARMED: {
       name: 'DISARMED',
@@ -482,7 +498,9 @@ OSD.constants = {
       default_position: -109,
       draw_order: 280,
       positionable: true,
-      preview: 'DISARMED'
+      preview: function(osd_data) {
+        return OSD.ascii_shift('DISARMED');
+      }
     },
     CROSSHAIRS: {
       name: 'CROSSHAIRS',
@@ -582,7 +600,7 @@ OSD.constants = {
       draw_order: 130,
       positionable: true,
       preview: function() {
-        return semver.gte(CONFIG.apiVersion, "1.36.0") ? ' 42.00' + FONT.symbol(SYM.AMP) : FONT.symbol(SYM.AMP) + '42.0';
+        return semver.gte(CONFIG.apiVersion, "1.36.0") ? OSD.ascii_shift(' 42.00') + FONT.symbol(SYM.AMP) : FONT.symbol(SYM.AMP) + OSD.ascii_shift('42.0');
       }
     },
     MAH_DRAWN: {
@@ -592,7 +610,7 @@ OSD.constants = {
       draw_order: 140,
       positionable: true,
       preview: function() {
-        return semver.gte(CONFIG.apiVersion, "1.36.0") ? ' 690' + FONT.symbol(SYM.MAH) : FONT.symbol(SYM.MAH) + '690';
+        return semver.gte(CONFIG.apiVersion, "1.36.0") ? OSD.ascii_shift(' 690') + FONT.symbol(SYM.MAH) : FONT.symbol(SYM.MAH) + OSD.ascii_shift('690');
       }
     },
     CRAFT_NAME: {
@@ -612,7 +630,7 @@ OSD.constants = {
       draw_order: 160,
       positionable: true,
       preview: function(osd_data) {
-        return ' 399.7' + FONT.symbol(osd_data.unit_mode === 0 ? SYM.FEET : SYM.METRE);
+        return OSD.ascii_shift(' 399.7') + FONT.symbol(osd_data.unit_mode === 0 ? SYM.FEET : SYM.METRE);
       }
     },
     ONTIME: {
@@ -620,14 +638,18 @@ OSD.constants = {
       desc: 'osdDescElementOnTime',
       default_position: -1,
       positionable: true,
-      preview: FONT.symbol(SYM.ON_M) + '05:42'
+      preview: function(osd_data) {
+        return FONT.symbol(SYM.ON_M) + OSD.ascii_shift('05:42');
+      }
     },
     FLYTIME: {
       name: 'FLYTIME',
       desc: 'osdDescElementFlyTime',
       default_position: -1,
       positionable: true,
-      preview: FONT.symbol(SYM.FLY_M) + '04:11'
+      preview: function(osd_data) {
+        return FONT.symbol(SYM.FLY_M) + OSD.ascii_shift('04:11');
+      }
     },
     FLYMODE: {
       name: 'FLYMODE',
@@ -635,7 +657,9 @@ OSD.constants = {
       default_position: -1,
       draw_order: 90,
       positionable: true,
-      preview: 'STAB'
+      preview: function(osd_data) {
+        return OSD.ascii_shift('STAB');
+      }
     },
     GPS_SPEED: {
       name: 'GPS_SPEED',
@@ -644,7 +668,7 @@ OSD.constants = {
       draw_order: 430,
       positionable: true,
       preview: function(osd_data) {
-        return ' 40' + (osd_data.unit_mode === 0 ? 'M' : 'K');
+        return OSD.ascii_shift(' 40' + (osd_data.unit_mode === 0 ? 'M' : 'K'));
       }
     },
     GPS_SATS: {
@@ -653,7 +677,9 @@ OSD.constants = {
       default_position: -1,
       draw_order: 420,
       positionable: true,
-      preview: FONT.symbol(SYM.GPS_SAT_L) + FONT.symbol(SYM.GPS_SAT_R) + '14'
+      preview: function(osd_data) {
+        return FONT.symbol(SYM.GPS_SAT_L) + FONT.symbol(SYM.GPS_SAT_R) + OSD.ascii_shift('14');
+      }
     },
     GPS_LON: {
       name: 'GPS_LON',
@@ -661,7 +687,9 @@ OSD.constants = {
       default_position: -1,
       draw_order: 450,
       positionable: true,
-      preview: FONT.symbol(SYM.ARROW_EAST) + '-000.0000000'
+      preview: function(osd_data) {
+        return FONT.symbol(SYM.ARROW_EAST) + OSD.ascii_shift('-000.0000000');
+      }
     },
     GPS_LAT: {
       name: 'GPS_LAT',
@@ -669,7 +697,9 @@ OSD.constants = {
       default_position: -1,
       draw_order: 440,
       positionable: true,
-      preview: FONT.symbol(SYM.ARROW_NORTH) + '-00.0000000 '
+      preview: function(osd_data) {
+        return FONT.symbol(SYM.ARROW_NORTH) + OSD.ascii_shift('-00.0000000 ');
+      }
     },
     DEBUG: {
       name: 'DEBUG',
@@ -677,7 +707,9 @@ OSD.constants = {
       default_position: -1,
       draw_order: 240,
       positionable: true,
-      preview: 'DBG     0     0     0     0'
+      preview: function(osd_data) {
+        return OSD.ascii_shift('DBG     0     0     0     0');
+      }
     },
     PID_ROLL: {
       name: 'PID_ROLL',
@@ -685,7 +717,9 @@ OSD.constants = {
       default_position: 0x800 | (10 << 5) | 2, // 0x0800 | (y << 5) | x
       draw_order: 170,
       positionable: true,
-      preview: 'ROL  43  40  20'
+      preview: function(osd_data) {
+        return OSD.ascii_shift('ROL  43  40  20');
+      }
     },
     PID_PITCH: {
       name: 'PID_PITCH',
@@ -693,7 +727,9 @@ OSD.constants = {
       default_position: 0x800 | (11 << 5) | 2, // 0x0800 | (y << 5) | x
       draw_order: 180,
       positionable: true,
-      preview: 'PIT  58  50  22'
+      preview: function(osd_data) {
+        return OSD.ascii_shift('PIT  58  50  22');
+      }
     },
     PID_YAW: {
       name: 'PID_YAW',
@@ -701,7 +737,9 @@ OSD.constants = {
       default_position: 0x800 | (12 << 5) | 2, // 0x0800 | (y << 5) | x
       draw_order: 190,
       positionable: true,
-      preview: 'YAW  70  45  20'
+      preview: function(osd_data) {
+        return OSD.ascii_shift('YAW  70  45  20');
+      }
     },
     POWER: {
       name: 'POWER',
@@ -710,7 +748,7 @@ OSD.constants = {
       draw_order: 200,
       positionable: true,
       preview: function() {
-        return semver.gte(CONFIG.apiVersion, "1.36.0") ? ' 142W' : '142W';
+        return OSD.ascii_shift(semver.gte(CONFIG.apiVersion, "1.36.0") ? ' 142W' : '142W');
       }
     },
     PID_RATE_PROFILE: {
@@ -719,14 +757,18 @@ OSD.constants = {
       default_position: 0x800 | (13 << 5) | 2, // 0x0800 | (y << 5) | x
       draw_order: 210,
       positionable: true,
-      preview: '1-2'
+      preview: function(osd_data) {
+        return OSD.ascii_shift('1-2');
+      }
     },
     BATTERY_WARNING: {
       name: 'BATTERY_WARNING',
       desc: 'osdDescElementBatteryWarning',
       default_position: -1,      
       positionable: true,
-      preview: 'LOW VOLTAGE'
+      preview: function(osd_data) {
+        return OSD.ascii_shift('LOW VOLTAGE');
+      }
     },
     AVG_CELL_VOLTAGE: {
       name: 'AVG_CELL_VOLTAGE',
@@ -734,7 +776,9 @@ OSD.constants = {
       default_position: 12 << 5,
       draw_order: 230,
       positionable: true,
-      preview: FONT.symbol(SYM.BATTERY) + '3.98' + FONT.symbol(SYM.VOLT)
+      preview: function(osd_data) {
+        return FONT.symbol(SYM.BATTERY) + OSD.ascii_shift('3.98') + FONT.symbol(SYM.VOLT);
+      }
     },
     PITCH_ANGLE: {
       name: 'PITCH_ANGLE',
@@ -742,7 +786,9 @@ OSD.constants = {
       default_position: -1,
       draw_order: 250,
       positionable: true,
-      preview: '-00.0'
+      preview: function(osd_data) {
+        return OSD.ascii_shift('-00.0');
+      }
     },
     ROLL_ANGLE: {
       name: 'ROLL_ANGLE',
@@ -750,7 +796,9 @@ OSD.constants = {
       default_position: -1,
       draw_order: 260,
       positionable: true,
-      preview: '-00.0'
+      preview: function(osd_data) {
+        return OSD.ascii_shift('-00.0');
+      }
     },
     MAIN_BATT_USAGE: {
       name: 'MAIN_BATT_USAGE',
@@ -765,7 +813,9 @@ OSD.constants = {
       desc: 'osdDescElementArmedTime',
       default_position: -1,
       positionable: true,
-      preview: FONT.symbol(SYM.FLY_M) + '02:07'
+      preview: function(osd_data) {
+        return FONT.symbol(SYM.FLY_M) + OSD.ascii_shift('02:07');
+      }
     },
     HOME_DIR: {
       name: 'HOME_DIRECTION',
@@ -782,7 +832,7 @@ OSD.constants = {
       draw_order: 460,
       positionable: true,
       preview:  function(osd_data) {
-        return '43' + FONT.symbol(osd_data.unit_mode === 0 ? SYM.FEET : SYM.METRE) + (semver.gte(CONFIG.apiVersion, "1.37.0")?'    ':'');
+        return OSD.ascii_shift('43') + FONT.symbol(osd_data.unit_mode === 0 ? SYM.FEET : SYM.METRE) + (semver.gte(CONFIG.apiVersion, "1.37.0")?'    ':'');
       }
     },
     NUMERICAL_HEADING: {
@@ -791,7 +841,9 @@ OSD.constants = {
       default_position: -1,
       draw_order: 290,
       positionable: true,
-      preview: FONT.symbol(SYM.ARROW_EAST) + '90'
+      preview: function(osd_data) {
+        return FONT.symbol(SYM.ARROW_EAST) + OSD.ascii_shift('90');
+      }
     },
     NUMERICAL_VARIO: {
       name: 'NUMERICAL_VARIO',
@@ -799,7 +851,9 @@ OSD.constants = {
       default_position: -1,
       draw_order: 300,
       positionable: true,
-      preview: FONT.symbol(SYM.ARROW_NORTH) + '8.7'
+      preview: function(osd_data) {
+        return FONT.symbol(SYM.ARROW_NORTH) + OSD.ascii_shift('8.7');
+      }
     },
     COMPASS_BAR: {
       name: 'COMPASS_BAR',
@@ -829,7 +883,9 @@ OSD.constants = {
       default_position: -1,
       draw_order: 480,
       positionable: true,
-      preview: FONT.symbol(SYM.TEMP_C) + '45'
+      preview: function(osd_data) {
+        return FONT.symbol(SYM.TEMP_C) + OSD.ascii_shift('45');
+      }
     },
     ESC_RPM: {
         name: 'ESC_RPM',
@@ -837,7 +893,9 @@ OSD.constants = {
         default_position: -1,
         draw_order: 490,
         positionable: true,
-        preview: '226000'
+        preview: function(osd_data) {
+          return OSD.ascii_shift('226000');
+        }
       },
     REMAINING_TIME_ESTIMATE: {
         name: 'REMAINING_TIME_ESTIMATE',
@@ -845,7 +903,9 @@ OSD.constants = {
         default_position: -1,
         draw_order: 80,
         positionable: true,
-        preview: '01:13'
+        preview: function(osd_data) {
+          return OSD.ascii_shift('01:13');
+        }
     },
     RTC_DATE_TIME: {
         name: 'RTC_DATE_TIME',
@@ -853,7 +913,9 @@ OSD.constants = {
         default_position: -1,
         draw_order: 500,
         positionable: true,
-        preview: '2017-11-11 16:20:00'
+        preview: function(osd_data) {
+          return OSD.ascii_shift('2017-11-11 16:20:00');
+        }
     },
     ADJUSTMENT_RANGE: {
         name: 'ADJUSTMENT_RANGE',
@@ -861,7 +923,9 @@ OSD.constants = {
         default_position: -1,
         draw_order: 510,
         positionable: true,
-        preview: 'PITCH/ROLL P: 42'
+        preview: function(osd_data) {
+          return OSD.ascii_shift('PITCH/ROLL P: 42');
+        }
     },
     TIMER_1: {
       name: 'TIMER_1',
@@ -899,7 +963,9 @@ OSD.constants = {
         default_position: -1,
         draw_order: 320,
         positionable: true,
-        preview: 'AG'
+        preview: function(osd_data) {
+          return OSD.ascii_shift('AG');
+        }
     },
     G_FORCE: {
         name: 'G_FORCE',
@@ -907,7 +973,9 @@ OSD.constants = {
         default_position: -1,
         draw_order: 15,
         positionable: true,
-        preview: '1.0G'
+        preview: function(osd_data) {
+          return OSD.ascii_shift('1.0G');
+        }
     }
   },
   UNKNOWN_DISPLAY_FIELD: {
@@ -915,7 +983,9 @@ OSD.constants = {
       desc: 'osdDescElementUnknown',
       default_position: -1,
       positionable: true,
-      preview: 'UNKNOWN '
+      preview: function(osd_data) {
+        return OSD.ascii_shift('UNKNOWN ');
+      }
   },
   ALL_STATISTIC_FIELDS: {
     MAX_SPEED: {
@@ -1573,7 +1643,8 @@ OSD.GUI.preview = {
 TABS.osd = {};
 TABS.osd.initialize = function (callback) {
     var self = this;
-
+    console.log('starting...');
+    FONT.initMetaData();
     if (GUI.active_tab != 'osd') {
         GUI.active_tab = 'osd';
     }
@@ -1594,7 +1665,6 @@ TABS.osd.initialize = function (callback) {
         fontbuttons.append($('<button>', { class: "load_font_file", i18n: "osdSetupOpenFont" }));
 
         // must invoke before i18n.localizePage() since it adds translation keys for expected logo size
-        FONT.initMetaData();
         LogoManager.init(FONT);
 
         // translate to user-selected language
