@@ -417,6 +417,8 @@ OSD.constants = {
   ],
   AHISIDEBARWIDTHPOSITION: 7,
   AHISIDEBARHEIGHTPOSITION: 3,
+  PILOT_LOGO_ROWS: 2,
+  PILOT_LOGO_COLUMNS: 3,
 
   // All display fields, from every version, do not remove elements, only add!
   ALL_DISPLAY_FIELDS: {
@@ -976,7 +978,28 @@ OSD.constants = {
         preview: function(osd_data) {
           return OSD.ascii_shift('1.0G');
         }
-    }
+    },
+    PILOT_LOGO:{
+      name: 'PILOT_LOGO',
+      desc: 'osdDescElementPilotLogo',
+      default_position: -1,
+      draw_order: 52,
+      positionable: true,
+      preview: function() {
+          var pilot_logo = new Array();
+          var rows  = OSD.constants.PILOT_LOGO_ROWS;
+          var columns = OSD.constants.PILOT_LOGO_COLUMNS;
+          var i = 0;
+          for (var y = 0; y < rows; y++) {
+            for (var x = 0; x < columns; x++){
+              var element = {x: x, y : y, sym : FONT.metadata.pilot_logo_offset + i};
+              pilot_logo.push(element);
+              i++
+            }
+          }
+          return pilot_logo;
+      }
+    },
   },
   UNKNOWN_DISPLAY_FIELD: {
       name: 'UNKNOWN_',
@@ -1195,7 +1218,8 @@ OSD.chooseFields = function () {
                   ]);
                   if (semver.gte(CONFIG.apiVersion, "1.40.0")) {
                     OSD.constants.DISPLAY_FIELDS = OSD.constants.DISPLAY_FIELDS.concat([
-                        F.G_FORCE
+                      F.G_FORCE,
+                      F.PILOT_LOGO,
                     ]);
                   }
                 }
@@ -1643,7 +1667,6 @@ OSD.GUI.preview = {
 TABS.osd = {};
 TABS.osd.initialize = function (callback) {
     var self = this;
-    console.log('starting...');
     FONT.initMetaData();
     if (GUI.active_tab != 'osd') {
         GUI.active_tab = 'osd';
@@ -2007,8 +2030,13 @@ TABS.osd.initialize = function (callback) {
             // logo first, so it gets overwritten by subsequent elements
             if (OSD.data.preview_logo) {
               var x = FONT.metadata.boot_logo_offset;
-              var logo_lines = Math.round((FONT.metadata.last_char - FONT.metadata.boot_logo_offset)/24)
-              for (var i = 1; i <= logo_lines; i++) {
+              var logo_start_line = 1;
+              var logo_lines = 4;
+              if(!FONT.metadata.is_legacy){
+                logo_start_line = 2;
+                logo_lines = Math.round((FONT.metadata.last_char - FONT.metadata.boot_logo_offset)/24) + 1;
+              }
+              for (var i = logo_start_line; i <= logo_lines; i++) {
                 for (var j = 3; j < 27; j++)
                     OSD.data.preview[i * 30 + j] = [{name: 'LOGO', positionable: false}, x++];
               }
