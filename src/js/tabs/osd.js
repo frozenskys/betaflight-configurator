@@ -346,10 +346,10 @@ OSD.generateTimerPreview = function(osd_data, timer_index) {
   }
   switch (osd_data.timers[timer_index].precision) {
     case 0:
-      preview += '00:00';
+      preview += OSD.ascii_shift('00:00');
       break;
     case 1:
-      preview += '00:00.00';
+      preview += OSD.ascii_shift('00:00.00');
       break;
   }
   return preview;
@@ -361,10 +361,10 @@ OSD.generateTemperaturePreview = function(osd_data, temperature) {
     case 0:
       temperature *= (9.0 / 5.0);
       temperature += 32.0;
-      preview += Math.floor(temperature) + 'F'
+      preview += OSD.ascii_shift(Math.floor(temperature) + 'F');
       break;
     case 1:
-      preview += temperature + 'C'
+      preview += OSD.ascii_shift(temperature + 'C');
       break;
   }
   return preview;
