@@ -3509,10 +3509,10 @@
         "message": "Enables an indicator when the anti gravity is active"
     },
     "osdDescElementPilotLogo": {
-        "message": "Shows how much G-Force the craft is experiencing"
+        "message": "Your Pilot Logo"
     },
     "osdDescGForce": {
-        "message": "Your Pilot Logo"
+        "message": "Shows how much G-Force the craft is experiencing"
     },
     "osdDescStatMaxSpeed": {
         "message": "Maximum recorded speed"

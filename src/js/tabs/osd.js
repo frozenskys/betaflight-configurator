@@ -19,7 +19,7 @@ SYM.AH_LEFT = 0x09;
 SYM.AH_CENTER_LINE = 0x07;
 SYM.AH_CENTER_LINE_RIGHT = 0x08;
 SYM.AH_CENTER = 0x0A;
-SYM.AH_BAR9_0 = 0x80;
+SYM.AH_BAR9_0 = 0x60;
 SYM.AH_DECORATION = 0x0C;
 SYM.THR = 0x69;
 SYM.THR1 = 0x6A;
@@ -33,10 +33,9 @@ SYM.PB_FULL = 0x78;
 SYM.PB_EMPTY = 0x7A;
 SYM.PB_END = 0x7B;
 SYM.PB_CLOSE = 0x7C;
-SYM.AMP = 0x9A;
-SYM.MAH = 0x07;
-SYM.TEMP_C = 0x0E;
-SYM.VOLT = 0x06;
+SYM.AMP = 0x7D;
+SYM.MAH = 0x7E;
+SYM.VOLT = 0x7F;
 
 var FONT = FONT || {};
 
@@ -116,7 +115,7 @@ FONT.setMetadata = function(data) {
     FONT.metadata.symbol_offset = data[6];
     FONT.metadata.pilot_logo_offset = data[7];
     FONT.metadata.boot_logo_offset = data[8];
-    FONT.metadata.last_char = 255;
+    FONT.metadata.last_char = 254;
     FONT.metadata.crc_value = data[63];
   } else {
     FONT.metadata.is_legacy = true;
@@ -172,7 +171,7 @@ FONT.parseMCMFontFile = function(data) {
     character_bytes.push(parseInt(line, 2));
   }
   // push the last char
-  FONT.setMetadata(character_bytes)
+  FONT.setMetadata(character_bytes);
   pushChar();
   return FONT.data.characters;
 };
@@ -818,7 +817,7 @@ OSD.constants = {
       default_position: -1,
       draw_order: 480,
       positionable: true,
-      preview: FONT.symbol(SYM.TEMP_C) + '45'
+      preview: '45 c'
     },
     ESC_RPM: {
         name: 'ESC_RPM',
@@ -1028,7 +1027,7 @@ OSD.constants = {
     }
 
   },
-  FONT_TYPES: [
+  FONT_TYPES_V0: [
     { file: "default", name: "Default" },
     { file: "bold", name: "Bold" },
     { file: "large", name: "Large" },
@@ -1037,6 +1036,9 @@ OSD.constants = {
     { file: "digital", name: "Digital" },
     { file: "clarity", name: "Clarity" },
     { file: "vision", name: "Vision" }
+  ],
+  FONT_TYPES_V1: [
+    { file: "default", name: "Default" }
   ]
 };
 
@@ -1606,7 +1608,7 @@ OSD.GUI.preview = {
 TABS.osd = {};
 TABS.osd.initialize = function (callback) {
     var self = this;
-    FONT.initMetaData();
+    
     if (GUI.active_tab != 'osd') {
         GUI.active_tab = 'osd';
     }
@@ -1614,6 +1616,13 @@ TABS.osd.initialize = function (callback) {
     $('#content').load("./tabs/osd.html", function () {
         // Generate font type select element
         var fontselect = $('.fontpresets');
+        if (semver.gte(CONFIG.apiVersion, "1.41.0")) {
+          OSD.constants.FONT_TYPES = OSD.constants.FONT_TYPES_V1;
+          OSD.constants.FONT_FOLDER = './resources/osd/v1/';
+        } else {
+          OSD.constants.FONT_TYPES = OSD.constants.FONT_TYPES_V0;
+          OSD.constants.FONT_FOLDER = './resources/osd/v0/';
+        }
         OSD.constants.FONT_TYPES.forEach(function(e, i) {
           var option = $('<option>', {
             "data-font-file": e.file,
@@ -1627,6 +1636,7 @@ TABS.osd.initialize = function (callback) {
         fontbuttons.append($('<button>', { class: "load_font_file", i18n: "osdSetupOpenFont" }));
 
         // must invoke before i18n.localizePage() since it adds translation keys for expected logo size
+        FONT.initMetaData();
         LogoManager.init(FONT);
 
         // translate to user-selected language
@@ -2125,12 +2135,11 @@ TABS.osd.initialize = function (callback) {
 
         // init structs once, also clears current font
         FONT.initData();
-        FONT.initMetaData();
 
         var $fontpresets = $('.fontpresets')
         $fontpresets.change(function(e) {
           var $font = $('.fontpresets option:selected');
-          $.get('./resources/osd/v0/' + $font.data('font-file') + '.mcm', function(data) {
+          $.get(OSD.constants.FONT_FOLDER + $font.data('font-file') + '.mcm', function(data) {
             FONT.parseMCMFontFile(data);
             FONT.preview($preview);
             LogoManager.init(FONT);
@@ -2141,9 +2150,10 @@ TABS.osd.initialize = function (callback) {
         
         // load the first font when we change tabs
         var $font = $('.fontpresets option:selected');
-        $.get('./resources/osd/v0/' + $font.data('font-file') + '.mcm', function(data) {
+        $.get(OSD.constants.FONT_FOLDER + $font.data('font-file') + '.mcm', function(data) {
           FONT.parseMCMFontFile(data);
           FONT.preview($preview);
+          LogoManager.init(FONT);
           LogoManager.drawPreview();
           updateOsdView();
         });
