@@ -79,7 +79,7 @@ FONT.constants = {
   SIZES: {
     /** NVM ram size for one font char, actual character bytes **/
     MAX_NVM_FONT_CHAR_SIZE: 54,
-    /** NVM ram field size for one font char, last 10 bytes not used for character **/
+    /** NVM ram field size for one font char, last 10 bytes not used for character data **/
     MAX_NVM_FONT_CHAR_FIELD_SIZE: 64,
     CHAR_HEIGHT: 18,
     CHAR_WIDTH: 12,
@@ -294,8 +294,10 @@ FONT.checkEEPROMHash = function() {
   return Promise.mapSeries([1,2,3,4], function(data, i){
     return MSP.promise(MSPCodes.MSP_OSD_CHAR_READ, [data])
     .then(function(info){
-      for(var i = 54; i < 64; ++i){
-        FONT.EEPROMHash += String.fromCharCode(info.data.getUint8(i));
+      if(info.length > 0){
+        for(var i = 54; i < 64; ++i){
+          FONT.EEPROMHash += String.fromCharCode(info.data.getUint8(i));
+        }
       }
     });
   });
@@ -2171,7 +2173,9 @@ TABS.osd.initialize = function (callback) {
           });
         });
         
-        // load the first font when we change tabs
+        // load the font when we change tabs
+        // first check if we can detect the font in the EEPROM 
+        // and if not load the default
         FONT.checkEEPROMHash().then(function(x){
           var eeprom_font;
           OSD.constants.FONT_TYPES.forEach(function(e, i) {
@@ -2182,22 +2186,21 @@ TABS.osd.initialize = function (callback) {
           if(eeprom_font){
             $.get(OSD.constants.FONT_FOLDER + eeprom_font.file + '.mcm', function(data) {
               FONT.parseMCMFontFile(data);
-              FONT.preview($preview);
-              LogoManager.init(FONT);
-              LogoManager.drawPreview();
-              updateOsdView();
+            });
+            // if we detected the font hide the warning
+            $('.note').fadeOut();
+          } else {
+            var $font = $('.fontpresets option:selected');
+            $.get(OSD.constants.FONT_FOLDER + $font.data('font-file') + '.mcm', function(data) {
+              FONT.parseMCMFontFile(data);
             });
           }
-        });
-        var $font = $('.fontpresets option:selected');
-        $.get(OSD.constants.FONT_FOLDER + $font.data('font-file') + '.mcm', function(data) {
-          FONT.parseMCMFontFile(data);
           FONT.preview($preview);
           LogoManager.init(FONT);
           LogoManager.drawPreview();
           updateOsdView();
         });
-
+        
         $('button.load_font_file').click(function() {
           FONT.openFontFile().then(function() {
             FONT.preview($preview);
