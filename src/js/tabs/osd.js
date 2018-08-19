@@ -2172,7 +2172,23 @@ TABS.osd.initialize = function (callback) {
         });
         
         // load the first font when we change tabs
-        FONT.checkEEPROMHash();
+        FONT.checkEEPROMHash().then(function(x){
+          var eeprom_font;
+          OSD.constants.FONT_TYPES.forEach(function(e, i) {
+            if(e.hash == FONT.EEPROMHash){
+              eeprom_font = e;
+            }
+          })
+          if(eeprom_font){
+            $.get(OSD.constants.FONT_FOLDER + eeprom_font.file + '.mcm', function(data) {
+              FONT.parseMCMFontFile(data);
+              FONT.preview($preview);
+              LogoManager.init(FONT);
+              LogoManager.drawPreview();
+              updateOsdView();
+            });
+          }
+        });
         var $font = $('.fontpresets option:selected');
         $.get(OSD.constants.FONT_FOLDER + $font.data('font-file') + '.mcm', function(data) {
           FONT.parseMCMFontFile(data);
