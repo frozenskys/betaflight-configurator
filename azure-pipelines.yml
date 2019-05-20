@@ -34,7 +34,7 @@ jobs:
   - script: npm install
     displayName: 'Run npm install'
 
-  - script: gulp release --win32
+  - script: gulp release --win32 --win64
     displayName: 'Run gulp release'
 
   - powershell: Set-Content -Path '$(System.DefaultWorkingDirectory)/release/log.txt' -Value $env:BUILD_SOURCEVERSIONMESSAGE
