@@ -12,6 +12,7 @@
 trigger:
 # TODO: change to master once pull request merged
 - azure-pipelines
+- master
 
 jobs:
 - job: 'Windows'
