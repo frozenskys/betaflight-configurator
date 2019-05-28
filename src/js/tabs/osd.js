@@ -596,7 +596,7 @@ OSD.constants = {
             draw_order: 160,
             positionable: true,
             preview: function (osd_data) {
-                return FONT.symbol(SYM.ALTITUDE) + ' 399.7' + FONT.symbol(osd_data.unit_mode === 0 ? SYM.FEET : SYM.METRE);
+                return FONT.symbol(SYM.ALTITUDE) + '399.7' + FONT.symbol(osd_data.unit_mode === 0 ? SYM.FEET : SYM.METRE);
             }
         },
         ONTIME: {
@@ -988,6 +988,14 @@ OSD.constants = {
             positionable: true,
             preview: 'PID_1'
         },
+        OSD_PROFILE_NAME: {
+            name: 'OSD_PROFILE_NAME',
+            desc: 'osdDescElementOsdProfileName',
+            default_position: -1,
+            draw_order: 440,
+            positionable: true,
+            preview: 'OSD_1'
+        },
     },
     UNKNOWN_DISPLAY_FIELD: {
         name: 'UNKNOWN_',
@@ -1303,6 +1311,7 @@ OSD.chooseFields = function () {
                                                 OSD.constants.DISPLAY_FIELDS = OSD.constants.DISPLAY_FIELDS.concat([
                                                     F.RATE_PROFILE_NAME,
                                                     F.PID_PROFILE_NAME,
+                                                    F.OSD_PROFILE_NAME
                                                 ]);
                                             }
                                         }
