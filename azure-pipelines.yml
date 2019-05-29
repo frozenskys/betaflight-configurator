@@ -12,6 +12,7 @@
 trigger:
 # TODO: change to master once pull request merged
 - azure-pipelines
+- master
 
 jobs:
 - job: 'Windows'
@@ -68,11 +69,6 @@ jobs:
   - script: gulp release --linux32 --linux64
     displayName: 'run gulp release'
 
-  - task: PublishPipelineArtifact@0
-    displayName: 'Publish Linux release'
-    inputs: 
-      artifactName: betaflight-configurator-linux
-      targetPath: '$(System.DefaultWorkingDirectory)/release'
 
 - job: 'MacOS'
 
