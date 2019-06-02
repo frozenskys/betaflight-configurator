@@ -22,6 +22,7 @@
 .tab-receiver .tunings table th {
     background-color: #ffbb2a;
     border-right: 1px solid #9c9c9c;
+    color: black;
 }
 
 .tab-receiver .tunings table td {
@@ -52,6 +53,7 @@
 
 .tab-receiver .rssi_channel_wrapper .head {
     background-color: #ffbb2a;
+    color: black;
 }
 
 .tab-receiver .rssi_channel_wrapper select {
@@ -65,6 +67,7 @@
 .tab-receiver .rcmap_wrapper .head {
     background-color: #ffbb2a;
     border-right: 1px solid #9c9c9c;
+    color: black;
 }
 
 .tab-receiver .hybrid_element {

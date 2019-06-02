@@ -28,19 +28,38 @@ var css_dark = [
     './js/libraries/jbox/jBox-dark.css',
 ]
 
+var availableColors = [
+    'gray',
+    'yellow',
+]
+
 var DarkTheme = {
     configEnabled: false,
+    accentColor: 'yellow',
+};
+
+DarkTheme.getColorsAvailable = function() {
+    return availableColors;
 };
 
 DarkTheme.setConfig = function(result) {
     if (this.configEnabled != result) {
         this.configEnabled = result;
-        
+
         if (this.configEnabled) {
             this.applyDark();
+            this.applyAccentColor(this.accentColor);
         } else {
             this.applyNormal();
+            this.applyAccentColor("yellow");
         }
+    }
+};
+
+DarkTheme.setAccentColor = function(color) {
+    this.accentColor = color;
+    if (this.configEnabled) {
+        this.applyAccentColor(color);
     }
 };
 
@@ -53,5 +72,18 @@ DarkTheme.applyDark = function() {
 DarkTheme.applyNormal = function() {
     for (var i = 0; i < css_dark.length; i++) {
         $('link[href="' + css_dark[i] + '"]').prop('disabled', true);
+    }
+};
+
+DarkTheme.applyAccentColor = function(color) {
+    switch (color) {
+        case 'gray':
+            $('head').append('<link href="./css/accent-colors/color-grey.css" rel="stylesheet" />')
+            break;
+        case 'yellow':
+            $('link[href="./css/accent-colors/color-grey.css"]').remove();
+            break
+        default:
+            break;
     }
 };

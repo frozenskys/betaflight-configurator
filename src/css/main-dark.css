@@ -70,6 +70,7 @@ dialog {
 
 .gui_box_titlebar {
     background-color: #ffbb2a;
+    color: black;
 }
 
 .gui_box_bottombar {
