@@ -4318,5 +4318,11 @@
     },
     "cliAutoComplete": {
         "message": "Advanced CLI AutoComplete"
+    },
+    "darkTheme": {
+        "message": "Enable dark theme and choose accent color"
+    },
+    "accentColor": {
+        "message": "Choose accent color"
     }
 }

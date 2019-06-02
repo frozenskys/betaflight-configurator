@@ -1,0 +1,79 @@
+.gui_box_titlebar {
+    background-color: gray;
+    color: white;
+}
+
+.tab-ports .ports thead td {
+    background-color: grey;
+    color: white;
+}
+
+.tab-adjustments .adjustments thead td {
+    background-color: grey;
+    color: white;
+}
+
+.tab-receiver .rcmap_wrapper .head {
+    background-color: grey;
+    color: white;
+}
+
+.tab-receiver .rssi_channel_wrapper .head {
+    background-color: grey;
+    color: white;
+}
+
+.tab-receiver .tunings table th {
+    background-color: grey;
+    color: white;
+}
+
+.tab-servos .title {
+    background-color: grey;
+    color: white;
+}
+
+.tab-pid_tuning .cf th {
+    background-color: grey;
+    color: white;
+}
+
+.tab-pid_tuning .throttle table th {
+    background: grey;
+    color: white;
+}
+
+.tab-pid_tuning .throttle table th:first-child {
+    background-color: grey;
+    color: white;
+}
+
+.tab-pid_tuning .throttle table th {
+    background: grey;
+    color: white;
+}
+
+.tab-pid_tuning .rc_curve th {
+    background-color: grey;
+    color: white;
+}
+
+.tab-pid_tuning .pid_titlebar th {
+    background: grey;
+    color: white;
+}
+
+.tab-pid_tuning .tab_container td.active {
+    background-color: grey;
+    color: white;
+}
+
+.tab-pid_tuning .tab_container td.active a {
+    background-color: grey;
+    color: white;
+}
+
+.tab-pid_tuning .single-field .head {
+    background-color: grey;
+    color: white;
+}

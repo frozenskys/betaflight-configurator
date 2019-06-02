@@ -379,6 +379,33 @@ function startProcess() {
                         CliAutoComplete.setEnabled(checked);
                     }).change();
 
+                $('div.darkTheme input')
+                    .prop('checked', DarkTheme.configEnabled)
+                    .change(function () {
+                        var checked = $(this).is(':checked');
+
+                        chrome.storage.local.set({'darkTheme': checked});
+                        DarkTheme.setConfig(checked);
+                    }).change();
+
+                chrome.storage.local.get('accentColor', function(result) {
+                    var accentColor_e = $('div.darkTheme select');
+                    var colorsAvailable = DarkTheme.getColorsAvailable();
+                    colorsAvailable.forEach(function(color) {
+                        accentColor_e.append('<option value="' + color + '">' + color + '</option>');
+                    });
+
+                    if(result.accentColor) {
+                        accentColor_e.val(result.accentColor);
+                    }
+
+                    accentColor_e.change(function() {
+                        var colorselected = $(this).val();
+                        chrome.storage.local.set({'accentColor': colorselected});
+                        DarkTheme.setAccentColor(colorselected);
+                    });
+                });
+
                 chrome.storage.local.get('userLanguageSelect', function (result) {
 
                     var userLanguage_e = $('div.userLanguage select');
@@ -542,6 +569,14 @@ function startProcess() {
 
     chrome.storage.local.get('cliAutoComplete', function (result) {
         CliAutoComplete.setEnabled(typeof result.cliAutoComplete == 'undefined' || result.cliAutoComplete); // On by default
+    });
+
+    chrome.storage.local.get('darkTheme', function (result) {
+        DarkTheme.setConfig(result.darkTheme);
+    });
+
+    chrome.storage.local.get('accentColor', function (result) {
+        DarkTheme.setAccentColor(result.accentColor);
     });
 };
 
