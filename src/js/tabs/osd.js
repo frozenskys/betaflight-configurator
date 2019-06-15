@@ -23,6 +23,8 @@ SYM.loadSymbols = function() {
     SYM.FEET = 0xF;
     SYM.KPH = 0x9E;
     SYM.MPH = 0x9D;
+    SYM.MPS = 0x9F;
+    SYM.FTPS = 0x99;
     SYM.SPEED = 0x70;
     SYM.TOTAL_DIST = 0x71;
     SYM.GPS_SAT_L = 0x1E;
@@ -39,6 +41,7 @@ SYM.loadSymbols = function() {
     SYM.ARROW_NORTH = 0x68;
     SYM.ARROW_SOUTH = 0x60;
     SYM.ARROW_EAST = 0x64;
+    SYM.ARROW_SMALL_UP = 0x75;
     SYM.HEADING_LINE = 0x1D;
     SYM.HEADING_DIVIDED_LINE = 0x1C;
     SYM.HEADING_N = 0x18;
@@ -390,35 +393,10 @@ OSD.drawStickOverlayPreview = function () {
     return stickOverlay;
 }
 
-OSD.constants = {
-    VISIBLE: 0x0800,
-    VIDEO_TYPES: [
-        'AUTO',
-        'PAL',
-        'NTSC'
-    ],
-    VIDEO_LINES: {
-        PAL: 16,
-        NTSC: 13
-    },
-    VIDEO_BUFFER_CHARS: {
-        PAL: 480,
-        NTSC: 390
-    },
-    UNIT_TYPES: [
-        'IMPERIAL',
-        'METRIC'
-    ],
-    TIMER_PRECISION: [
-        'SECOND',
-        'HUNDREDTH',
-        'TENTH'
-    ],
-    AHISIDEBARWIDTHPOSITION: 7,
-    AHISIDEBARHEIGHTPOSITION: 3,
+OSD.loadDisplayFields = function() {
 
-    // All display fields, from every version, do not remove elements, only add!
-    ALL_DISPLAY_FIELDS: {
+ // All display fields, from every version, do not remove elements, only add!
+    OSD.ALL_DISPLAY_FIELDS = {
         MAIN_BATT_VOLTAGE: {
             name: 'MAIN_BATT_VOLTAGE',
             text: 'osdTextElementMainBattVoltage',
@@ -840,7 +818,9 @@ OSD.constants = {
             default_position: -1,
             draw_order: 300,
             positionable: true,
-            preview: FONT.symbol(SYM.ARROW_NORTH) + '8.7'
+            preview: function (osd_data) {
+                return FONT.symbol(SYM.ARROW_SMALL_UP) + '8.7' + (osd_data.unit_mode === 0 ? FONT.symbol(SYM.FTPS) : FONT.symbol(SYM.MPS));
+            }
         },
         COMPASS_BAR: {
             name: 'COMPASS_BAR',
@@ -1077,7 +1057,45 @@ OSD.constants = {
             positionable: true,
             preview: 'OSD_1'
         },
+        RSSI_DBM_VALUE: {
+            name: 'OSD_PROFILE_NAME',
+            text: 'osdTextElementRssiDbmValue',
+            desc: 'osdDescElementRssiDbmValue',
+            default_position: -1,
+            draw_order: 395,
+            positionable: true,
+            preview: FONT.symbol(SYM.RSSI) + '-130'
+        },
+    };
+};
+
+OSD.constants = {
+    VISIBLE: 0x0800,
+    VIDEO_TYPES: [
+        'AUTO',
+        'PAL',
+        'NTSC'
+    ],
+    VIDEO_LINES: {
+        PAL: 16,
+        NTSC: 13
     },
+    VIDEO_BUFFER_CHARS: {
+        PAL: 480,
+        NTSC: 390
+    },
+    UNIT_TYPES: [
+        'IMPERIAL',
+        'METRIC'
+    ],
+    TIMER_PRECISION: [
+        'SECOND',
+        'HUNDREDTH',
+        'TENTH'
+    ],
+    AHISIDEBARWIDTHPOSITION: 7,
+    AHISIDEBARHEIGHTPOSITION: 3,
+
     UNKNOWN_DISPLAY_FIELD: {
         name: 'UNKNOWN',
         text: 'osdTextElementUnknown',
@@ -1249,6 +1267,11 @@ OSD.constants = {
             name: 'LINK_QUALITY',
             desc: 'osdWarningLinkQuality'
         },
+        RSSI_DBM: {
+            name: 'RSSI_DBM',
+            desc: 'osdWarningRssiDbm'
+        },
+
     },
     FONT_TYPES: [
         { file: "default", name: "Default" },
@@ -1292,7 +1315,7 @@ OSD.searchLimitsElement = function (arrayElements) {
 
 // Pick display fields by version, order matters, so these are going in an array... pry could iterate the example map instead
 OSD.chooseFields = function () {
-    var F = OSD.constants.ALL_DISPLAY_FIELDS;
+    var F = OSD.ALL_DISPLAY_FIELDS;
     // version 3.0.1
     if (semver.gte(CONFIG.apiVersion, "1.21.0")) {
         OSD.constants.DISPLAY_FIELDS = [
@@ -1393,7 +1416,8 @@ OSD.chooseFields = function () {
                                                 OSD.constants.DISPLAY_FIELDS = OSD.constants.DISPLAY_FIELDS.concat([
                                                     F.RATE_PROFILE_NAME,
                                                     F.PID_PROFILE_NAME,
-                                                    F.OSD_PROFILE_NAME
+                                                    F.OSD_PROFILE_NAME,
+                                                    F.RSSI_DBM_VALUE
                                                 ]);
                                             }
                                         }
@@ -1533,7 +1557,8 @@ OSD.chooseFields = function () {
         ]);
         OSD.constants.WARNINGS = OSD.constants.WARNINGS.concat([
             F.RSSI,
-            F.LINK_QUALITY
+            F.LINK_QUALITY,
+            F.RSSI_DBM,
         ]);
     }
 };
@@ -1979,6 +2004,7 @@ TABS.osd.initialize = function (callback) {
 
         // Prepare symbols depending on the version
         SYM.loadSymbols();
+        OSD.loadDisplayFields();
 
         // Generate font type select element
         var fontPresetsElement = $('.fontpresets');
