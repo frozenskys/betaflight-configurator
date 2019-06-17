@@ -245,6 +245,10 @@ FONT.upload = function ($progress) {
         return MSP.promise(MSPCodes.MSP_OSD_CHAR_WRITE, FONT.msp.encode(i));
     })
         .then(function () {
+
+            console.log('Uploaded all ' + FONT.data.characters.length + ' characters');
+            GUI.log(i18n.getMessage('osdSetupUploadingFontEnd', {length: FONT.data.characters.length}));
+
             OSD.GUI.fontManager.close();
 
             return MSP.promise(MSPCodes.MSP_SET_REBOOT);
@@ -1209,66 +1213,82 @@ OSD.constants = {
     ALL_WARNINGS: {
         ARMING_DISABLED: {
             name: 'ARMING_DISABLED',
+            text: 'osdWarningTextArmingDisabled',
             desc: 'osdWarningArmingDisabled'
         },
         BATTERY_NOT_FULL: {
             name: 'BATTERY_NOT_FULL',
+            text: 'osdWarningTextBatteryNotFull',
             desc: 'osdWarningBatteryNotFull'
         },
         BATTERY_WARNING: {
             name: 'BATTERY_WARNING',
+            text: 'osdWarningTextBatteryWarning',
             desc: 'osdWarningBatteryWarning'
         },
         BATTERY_CRITICAL: {
             name: 'BATTERY_CRITICAL',
+            text: 'osdWarningTextBatteryCritical',
             desc: 'osdWarningBatteryCritical'
         },
         VISUAL_BEEPER: {
             name: 'VISUAL_BEEPER',
+            text: 'osdWarningTextVisualBeeper',
             desc: 'osdWarningVisualBeeper'
         },
         CRASH_FLIP_MODE: {
             name: 'CRASH_FLIP_MODE',
+            text: 'osdWarningTextCrashFlipMode',
             desc: 'osdWarningCrashFlipMode'
         },
         ESC_FAIL: {
             name: 'ESC_FAIL',
+            text: 'osdWarningTextEscFail',
             desc: 'osdWarningEscFail'
         },
         CORE_TEMPERATURE: {
             name: 'CORE_TEMPERATURE',
+            text: 'osdWarningTextCoreTemperature',
             desc: 'osdWarningCoreTemperature'
         },
         RC_SMOOTHING_FAILURE: {
             name: 'RC_SMOOTHING_FAILURE',
+            text: 'osdWarningTextRcSmoothingFailure',
             desc: 'osdWarningRcSmoothingFailure'
         },
         FAILSAFE: {
             name: 'FAILSAFE',
+            text: 'osdWarningTextFailsafe',
             desc: 'osdWarningFailsafe'
         },
         LAUNCH_CONTROL: {
             name: 'LAUNCH_CONTROL',
+            text: 'osdWarningTextLaunchControl',
             desc: 'osdWarningLaunchControl'
         },
         GPS_RESCUE_UNAVAILABLE: {
             name: 'GPS_RESCUE_UNAVAILABLE',
+            text: 'osdWarningTextGpsRescueUnavailable',
             desc: 'osdWarningGpsRescueUnavailable'
         },
         GPS_RESCUE_DISABLED: {
             name: 'GPS_RESCUE_DISABLED',
+            text: 'osdWarningTextGpsRescueDisabled',
             desc: 'osdWarningGpsRescueDisabled'
         },
         RSSI: {
             name: 'RSSI',
+            text: 'osdWarningTextRSSI',
             desc: 'osdWarningRSSI'
         },
         LINK_QUALITY: {
             name: 'LINK_QUALITY',
+            text: 'osdWarningTextLinkQuality',
             desc: 'osdWarningLinkQuality'
         },
         RSSI_DBM: {
             name: 'RSSI_DBM',
+            text: 'osdWarningTextRssiDbm',
             desc: 'osdWarningRssiDbm'
         },
 
@@ -1547,13 +1567,13 @@ OSD.chooseFields = function () {
     }
     
     OSD.constants.TIMER_TYPES = [
-        'ON TIME',
-        'TOTAL ARMED TIME',
-        'LAST ARMED TIME'
+        'ON_TIME',
+        'TOTAL_ARMED_TIME',
+        'LAST_ARMED_TIME'
     ];
     if (semver.gte(CONFIG.apiVersion, "1.42.0")) {
         OSD.constants.TIMER_TYPES = OSD.constants.TIMER_TYPES.concat([
-            'ON/ARM TIME'
+            'ON_ARM_TIME'
         ]);
         OSD.constants.WARNINGS = OSD.constants.WARNINGS.concat([
             F.RSSI,
@@ -1724,8 +1744,8 @@ OSD.msp = {
                 if (semver.gte(CONFIG.apiVersion, "1.21.0") && bit_check(d.flags, 0)) {
                     d.unit_mode = view.readU8();
                     d.alarms = {};
-                    d.alarms['rssi'] = { display_name: 'Rssi', value: view.readU8() };
-                    d.alarms['cap'] = { display_name: 'Capacity', value: view.readU16() };
+                    d.alarms['rssi'] = { display_name: i18n.getMessage('osdTimerAlarmOptionRssi'), value: view.readU8() };
+                    d.alarms['cap'] = { display_name: i18n.getMessage('osdTimerAlarmOptionCapacity'), value: view.readU16() };
                     if (semver.lt(CONFIG.apiVersion, "1.36.0")) {
                         d.alarms['time'] = { display_name: 'Minutes', value: view.readU16() };
                     } else {
@@ -1737,7 +1757,7 @@ OSD.msp = {
                         }
                     }
 
-                    d.alarms['alt'] = { display_name: 'Altitude', value: view.readU16() };
+                    d.alarms['alt'] = { display_name: i18n.getMessage('osdTimerAlarmOptionAltitude'), value: view.readU16() };
                 }
             }
         }
@@ -1823,7 +1843,7 @@ OSD.msp = {
                 // Push Unknown Warning field
                 } else {
                     var warningNumber = i - OSD.constants.WARNINGS.length + 1;
-                    d.warnings.push({name: 'UNKNOWN_' + warningNumber, desc: 'osdWarningUnknown', enabled: (warningFlags & (1 << i)) != 0 });
+                    d.warnings.push({name: 'UNKNOWN', text: ['osdWarningTextUnknown', warningNumber], desc: 'osdWarningUnknown', enabled: (warningFlags & (1 << i)) != 0 });
 
                 }
             }
@@ -2045,6 +2065,32 @@ TABS.osd.initialize = function (callback) {
         $('.stats-container div.cf_tip').attr('title', i18n.getMessage('osdSectionHelpStats'));
         $('.warnings-container div.cf_tip').attr('title', i18n.getMessage('osdSectionHelpWarnings'));
 
+        function titleizeField(field) {
+            let finalFieldName = inflection.titleize(field.name); 
+            if (field.text) {
+                if (Array.isArray(field.text) && i18n.existsMessage(field.text[0])) {
+                    finalFieldName = i18n.getMessage(field.text[0], field.text.slice(1));
+                } else if (i18n.existsMessage(field.text)) {
+                    finalFieldName = i18n.getMessage(field.text);
+                }
+            }
+            return finalFieldName;
+        }
+
+        function insertOrdered(fieldList, field) {
+            let added = false;
+            fieldList.children().each(function() {
+                if ($(this).text().localeCompare(field.text(), i18n.getCurrentLocale(), { sensitivity: 'base' }) > 0) {
+                    $(this).before(field);
+                    added = true;
+                    return false;
+                }
+            });
+            if(!added) {
+                fieldList.append(field);
+            }
+        }
+
         // 2 way binding... sorta
         function updateOsdView() {
             // ask for the OSD config data
@@ -2065,7 +2111,7 @@ TABS.osd.initialize = function (callback) {
                     var $videoTypes = $('.video-types').empty();
                     for (var i = 0; i < OSD.constants.VIDEO_TYPES.length; i++) {
                         var type = OSD.constants.VIDEO_TYPES[i];
-                        var $checkbox = $('<label/>').append($('<input name="video_system" type="radio"/>' + type + '</label>')
+                        var $checkbox = $('<label/>').append($('<input name="video_system" type="radio"/>' + i18n.getMessage('osdSetupVideoFormatOption' + inflection.camelize(type.toLowerCase())) + '</label>')
                             .prop('checked', i === OSD.data.video_system)
                             .data('type', type)
                             .data('type', i)
@@ -2086,7 +2132,7 @@ TABS.osd.initialize = function (callback) {
                         var $unitMode = $('.units').empty();
                         for (var i = 0; i < OSD.constants.UNIT_TYPES.length; i++) {
                             var type = OSD.constants.UNIT_TYPES[i];
-                            var $checkbox = $('<label/>').append($('<input name="unit_mode" type="radio"/>' + type + '</label>')
+                            var $checkbox = $('<label/>').append($('<input name="unit_mode" type="radio"/>' + i18n.getMessage('osdSetupUnitsOption' + inflection.camelize(type.toLowerCase())) + '</label>')
                                 .prop('checked', i === OSD.data.unit_mode)
                                 .data('type', type)
                                 .data('type', i)
@@ -2138,7 +2184,7 @@ TABS.osd.initialize = function (callback) {
                                 sourceTimerTableData.append('<label for="timerSource_' + tim.index + '" class="char-label">' + i18n.getMessage('osdTimerSource') + '</label>');
                                 var src = $('<select class="timer-option" id="timerSource_' + tim.index + '"></select>');
                                 OSD.constants.TIMER_TYPES.forEach(function (e, i) {
-                                    src.append('<option value="' + i + '">' + e + '</option>');
+                                    src.append('<option value="' + i + '">' + i18n.getMessage('osdTimerSourceOption' + inflection.camelize(e.toLowerCase())) + '</option>');
                                 });
                                 src[0].selectedIndex = tim.src;
                                 src.blur(function (e) {
@@ -2160,7 +2206,7 @@ TABS.osd.initialize = function (callback) {
                                 precisionTimerTableData.append('<label for="timerPrec_' + tim.index + '" class="char-label">' + i18n.getMessage('osdTimerPrecision') + '</label>');
                                 var precision = $('<select class="timer-option osd_tip" id="timerPrec_' + tim.index + '"></select>');
                                 OSD.constants.TIMER_PRECISION.forEach(function (e, i) {
-                                    precision.append('<option value="' + i + '">' + e + '</option>');
+                                    precision.append('<option value="' + i + '">' + i18n.getMessage('osdTimerPrecisionOption' + inflection.camelize(e.toLowerCase())) + '</option>');
                                 });
                                 precision[0].selectedIndex = tim.precision;
                                 precision.blur(function (e) {
@@ -2261,9 +2307,16 @@ TABS.osd.initialize = function (callback) {
                                                 });
                                         })
                                 );
-                                $field.append('<label for="' + field.name + '" class="char-label">' + inflection.titleize(field.name) + '</label>');
 
-                                $warningFields.append($field);
+                                let finalFieldName = titleizeField(field);
+                                $field.append('<label for="' + field.name + '" class="char-label">' + finalFieldName + '</label>');
+
+                                // Insert in alphabetical order, with unknown fields at the end
+                                if (field.name == 'UNKNOWN') {
+                                    $warningFields.append($field);
+                                } else {
+                                    insertOrdered($warningFields, $field);
+                                }
                             }
                         }
                     }
@@ -2372,14 +2425,8 @@ TABS.osd.initialize = function (callback) {
                                         })
                                 );
                         }
-                        let finalFieldName = inflection.titleize(field.name); 
-                        if (field.text) {
-                            if (Array.isArray(field.text) && i18n.existsMessage(field.text[0])) {
-                                finalFieldName = i18n.getMessage(field.text[0], field.text.slice(1));
-                            } else if (i18n.existsMessage(field.text)) {
-                                finalFieldName = i18n.getMessage(field.text);
-                            }
-                        }
+
+                        let finalFieldName = titleizeField(field); 
                         $field.append('<label for="' + field.name + '" class="char-label">' + finalFieldName + '</label>');
                         if (field.positionable && field.isVisible[OSD.getCurrentPreviewProfile()]) {
                             $field.append(
@@ -2402,17 +2449,7 @@ TABS.osd.initialize = function (callback) {
                         if (field.name == OSD.constants.UNKNOWN_DISPLAY_FIELD.name) {
                             $displayFields.append($field);
                         } else {
-                            let added = false;
-                            $displayFields.children().each(function() {
-                                if ($(this).text().localeCompare($field.text(), i18n.getCurrentLocale(), { sensitivity: 'base' }) > 0) {
-                                    $(this).before($field);
-                                    added = true;
-                                    return false;
-                                }
-                            });
-                            if(!added) {
-                                $displayFields.append($field);
-                            }
+                            insertOrdered($displayFields, $field);
                         }
                     }
 
@@ -2630,9 +2667,7 @@ TABS.osd.initialize = function (callback) {
                 $('a.flash_font').addClass('disabled');
                 $('.progressLabel').text(i18n.getMessage('osdSetupUploadingFont'));
                 FONT.upload($('.progress').val(0)).then(function () {
-                    var msg = 'Uploaded all ' + FONT.data.characters.length + ' characters';
-                    console.log(msg);
-                    $('.progressLabel').text(msg);
+                    $('.progressLabel').text(i18n.getMessage('osdSetupUploadingFontEnd', {length: FONT.data.characters.length}));
                 });
             }
         });
