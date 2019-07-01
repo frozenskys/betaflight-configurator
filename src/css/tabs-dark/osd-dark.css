@@ -65,6 +65,7 @@
 }
 
 .tab-osd .switchable-field.mouseover {
+  background: #3a3a3a;
   border: 1px solid #9c9c9c;
 }
 
