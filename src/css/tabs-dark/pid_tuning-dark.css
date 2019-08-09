@@ -1,10 +1,12 @@
 .tab-pid_tuning .profile .helpicon,
-.tab-pid_tuning .rate_profile .helpicon {
+.tab-pid_tuning .rate_profile .helpicon,
+.tab-pid_tuning .expertTuningMode .helpicon {
     background-image: url(../../images/icons/cf_icon_info_grey.svg);
     opacity: 0.4;
 }
 .tab-pid_tuning .profile .helpicon:hover,
-.tab-pid_tuning .rate_profile .helpicon:hover {
+.tab-pid_tuning .rate_profile .helpicon:hover,
+.tab-pid_tuning .expertTuningMode .helpicon:hover {
     opacity: 1;
 }
 
@@ -19,7 +21,7 @@
 }
 
 .tab-pid_tuning .cf tr {
-    background-color: #393b3a;
+    background-color: #414443;
 }
 
 .tab-pid_tuning .cf th {
@@ -49,17 +51,15 @@
 }
 
 .tab-pid_tuning .throttle table td {
-    background: #414443;
     border-right: 1px solid #9c9c9c;
 }
 
 .tab-pid_tuning .throttle table td {
-    background: #414443;
     border-right: 1px solid #9c9c9c;
 }
 
 .tab-pid_tuning .throttle table tr:nth-child(odd) {
-    background-color: #393b3a;
+    background-color: #414443;
 }
 
 .tab-pid_tuning .throttle table input {
@@ -161,8 +161,8 @@
 
 
 .pid_mode {
-    background-color: #1f1f1f;
-    border-bottom: 1px solid #1f1f1f;
+    background-color: #3c3c3c;
+    border-bottom: 1px solid #3c3c3c;
     color: white;
 }
 
@@ -244,4 +244,17 @@
 
 .tab-pid_tuning dialog select {
     border: 1px solid #9c9c9c;
+}
+
+.tab-pid_tuning .sliderLabels th {
+    background: #414443;
+    color: white;
+}
+
+.tab-pid_tuning input:disabled,
+.tab-pid_tuning .cf input:disabled,
+.tab-pid_tuning select:disabled,
+.tab-pid_tuning .cf select:disabled {
+    color: rgb(105, 105, 105);
+    background-color: #2d2d2d;
 }

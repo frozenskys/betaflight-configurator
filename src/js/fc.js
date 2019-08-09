@@ -59,6 +59,9 @@ var ADVANCED_TUNING;
 var SENSOR_CONFIG;
 var COPY_PROFILE;
 var DEFAULT;
+var DEFAULT_PIDS;
+var DEFAULT_ADVANCED_TUNING;
+var DEFAULT_OTHER;
 
 var FC = {
     resetState: function () {
@@ -503,6 +506,41 @@ var FC = {
             dterm_notch_cutoff:             160,
             dterm_notch_hz:                 260,
             yaw_lowpass_hz:                 100,
+            dyn_notch_range:                  3,
+            dyn_notch_width_percent:          8,
+            dyn_notch_q:                    120,
+            dyn_notch_min_hz:               150,
+        };
+
+        DEFAULT_PIDS = [
+            42, 60, 35, 20, 70,
+            46, 70, 38, 22, 75,
+            30, 80,  0,  0, 70,
+        ];
+
+        DEFAULT_ADVANCED_TUNING = {
+            feedforwardTransition:      0,
+            acroTrainerAngleLimit:     20,
+            throttleBoost:              5,
+            absoluteControlGain:        0,
+            itermRotation:              0,
+            vbatPidCompensation:        0,
+            itermRelax:                 1,
+            itermRelaxType:             1,
+            itermRelaxCutoff:          20,
+            useIntegratedYaw:           0,
+            dMinGain:                  27,
+            dMinAdvance:               20,
+            antiGravityMode:            0,
+            itermAcceleratorGain:    5000,
+        };
+
+        DEFAULT_OTHER = {
+            // approximate filter latency at 50% throttle
+            gyroFilterLatency:     1.2,
+            dTermFilterLatency:    2.3,
+            // feedforward to d gain ratio
+            FDRatio:                18,
         };
     },
 
@@ -578,7 +616,45 @@ var FC = {
             versionFilterDefaults.dterm_lowpass_type = FC.FILTER_TYPE_FLAGS.BIQUAD;
             versionFilterDefaults.dterm_lowpass2_hz = 150;
             versionFilterDefaults.dterm_lowpass2_type = FC.FILTER_TYPE_FLAGS.BIQUAD;
-        }
+            if (semver.gte(CONFIG.apiVersion, "1.42.0")) {
+                versionFilterDefaults.gyro_lowpass_hz = 150;
+                versionFilterDefaults.gyro_lowpass_dyn_min_hz = 200;
+                versionFilterDefaults.gyro_lowpass_dyn_max_hz = 500;
+                versionFilterDefaults.gyro_lowpass_type = FC.FILTER_TYPE_FLAGS.PT1;
+                versionFilterDefaults.gyro_lowpass2_hz = 250;
+                versionFilterDefaults.gyro_lowpass2_type = FC.FILTER_TYPE_FLAGS.PT1;
+                versionFilterDefaults.dterm_lowpass_hz = 150;
+                versionFilterDefaults.dterm_lowpass_dyn_min_hz = 70;
+                versionFilterDefaults.dterm_lowpass_dyn_max_hz = 170;
+                versionFilterDefaults.dterm_lowpass_type = FC.FILTER_TYPE_FLAGS.PT1;
+                versionFilterDefaults.dterm_lowpass2_type = FC.FILTER_TYPE_FLAGS.PT1;
+                versionFilterDefaults.gyro_notch_cutoff = 0;
+                versionFilterDefaults.gyro_notch_hz = 0;
+                versionFilterDefaults.gyro_notch2_cutoff = 0;
+                versionFilterDefaults.gyro_notch2_hz = 0;
+                versionFilterDefaults.dterm_notch_cutoff = 0;
+                versionFilterDefaults.dterm_notch_hz = 0;
+                versionFilterDefaults.yaw_lowpass_hz = 0;
+            }
+        } 
         return versionFilterDefaults;
     },
+
+    getPidDefaults: function() {
+        var versionPidDefaults = DEFAULT_PIDS;
+        // if defaults change they should go here
+        return versionPidDefaults;
+    },
+
+    getAdvancedTuningDefaults: function() {
+        var versionAdvancedTuningDefaults = DEFAULT_ADVANCED_TUNING;
+        // if defaults change they should go here
+        return versionAdvancedTuningDefaults;
+    },
+
+    getOtherDefaults: function() {
+        var versionOtherDefaults = DEFAULT_OTHER;
+        // if defaults change they should go here
+        return versionOtherDefaults;
+    }
 };
