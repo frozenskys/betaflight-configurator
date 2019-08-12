@@ -1,7 +1,5 @@
 'use strict';
 
-var nwGui = getNwGui();
-
 var googleAnalytics = analytics;
 var analytics = undefined;
 
@@ -15,17 +13,6 @@ $(document).ready(function () {
         });
     });
 });
-
-function getNwGui() {
-    var gui = null;
-    try {
-        gui = require('nw.gui');
-    } catch (ex) {
-        console.log("Could not require 'nw.gui', maybe inside chrome");
-    }
-
-    return gui;
-}
 
 function checkSetupAnalytics(callback) {
     if (!analytics) {
@@ -44,7 +31,7 @@ function checkSetupAnalytics(callback) {
 };
 
 function getBuildType() {
-    return nwGui ? 'NW.js' : 'Chrome';
+    return GUI.Mode;
 }
 
 function setupAnalytics(result) {
@@ -79,8 +66,8 @@ function setupAnalytics(result) {
         analytics.sendEvent(analytics.EVENT_CATEGORIES.APPLICATION, 'AppClose', { sessionControl: 'end' })
     }
 
-    if (nwGui) {
-        var win = nwGui.Window.get();
+    if (GUI.isNWJS()) {
+        var win = GUI.nwGui.Window.get();
         win.on('close', function () {
             sendCloseEvent();
 
@@ -90,7 +77,7 @@ function setupAnalytics(result) {
             // do not open the window
             policy.ignore();
             // and open it in external browser
-            nwGui.Shell.openExternal(url);
+            GUI.nwGui.Shell.openExternal(url);
         });
     } else {
         // Looks like we're in Chrome - but the event does not actually get fired
@@ -133,12 +120,6 @@ function startProcess() {
     if (GUI.operating_system !== 'ChromeOS') {
         checkForConfiguratorUpdates();
     }
-
-    ConfigStorage.get('logopen', function (result) {
-        if (result.logopen) {
-            $("#showlog").trigger('click');
-        }
-    });
 
     // log webgl capability
     // it would seem the webgl "enabling" through advanced settings will be ignored in the future
@@ -293,7 +274,7 @@ function startProcess() {
                         TABS.onboard_logging.initialize(content_ready);
                         break;
                     case 'cli':
-                        TABS.cli.initialize(content_ready, nwGui);
+                        TABS.cli.initialize(content_ready, GUI.nwGui);
                         break;
 
                     default:
@@ -397,29 +378,6 @@ function startProcess() {
                         ConfigStorage.set({'darkTheme': checked});
                         DarkTheme.setConfig(checked);
                     }).change();
-
-                ConfigStorage.get('userLanguageSelect', function (result) {
-
-                    var userLanguage_e = $('div.userLanguage select');
-                    var languagesAvailables = i18n.getLanguagesAvailables();
-                    userLanguage_e.append('<option value="DEFAULT">' + i18n.getMessage('language_default') + '</option>');
-                    userLanguage_e.append('<option disabled>------</option>');
-                    languagesAvailables.forEach(function(element) {
-                        var languageName = i18n.getMessage('language_' + element);
-                        userLanguage_e.append('<option value="' + element + '">' + languageName + '</option>');
-                    });
-                    
-                    if (result.userLanguageSelect) {
-                        userLanguage_e.val(result.userLanguageSelect);
-                    }
-                    
-                    userLanguage_e.change(function () {
-                        var languageSelected = $(this).val();
-
-                        // Select the new language, a restart is required
-                        ConfigStorage.set({'userLanguageSelect': languageSelected});
-                    });
-                });
 
                 function close_and_cleanup(e) {
                     if (e.type == 'click' && !$.contains($('div#options-window')[0], e.target) || e.type == 'keyup' && e.keyCode == 27) {
@@ -540,6 +498,12 @@ function startProcess() {
         }
         $(this).text(state ? i18n.getMessage('logActionHide') : i18n.getMessage('logActionShow'));
         $(this).data('state', state);
+    });
+
+    ConfigStorage.get('logopen', function (result) {
+        if (result.logopen) {
+            $("#showlog").trigger('click');
+        }
     });
 
     ConfigStorage.get('permanentExpertMode', function (result) {
