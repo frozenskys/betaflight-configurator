@@ -1461,21 +1461,28 @@ TABS.pid_tuning.initialize = function (callback) {
                 // check if filters changed manually
                 let filterGyroSliderUnavailable = false;
                 let filterDTermSliderUnavailable = false;
-                let dtermChange = false;
+                let filterDefaultValues = [];
                 for (let key in FILTER_DEFAULT) {
-                    if (key == "dterm_lowpass_hz") {
-                        dtermChange = true;
-                    };
-                    if (!dtermChange) {
-                        if (FILTER_CONFIG[key] != Math.min(Math.round(FILTER_DEFAULT[key] * gyroFilterSliderValue), 1000) && FILTER_CONFIG[key] != FILTER_DEFAULT[key]) {
+                    filterDefaultValues.push(FILTER_DEFAULT[key]);
+                }
+                // these are not in filter default but are in html selects -> gyro_lowpass_dynamic_type which is gyro_lowpass_type
+                filterDefaultValues.splice(2, 0, FC.FILTER_TYPE_FLAGS.PT1);
+                filterDefaultValues.splice(17, 0, FC.FILTER_TYPE_FLAGS.PT1);
+                // iterate inputs and selects and compare with default*slidervalue to see if changed manually or by sliders
+                $('.pid_filter input[type=number], .pid_filter select').each(function(i, item) {
+                    let value = $(this).val();
+                    if (i < 15) {
+                        if (value != Math.min(Math.round(filterDefaultValues[i] * gyroFilterSliderValue), 1000) && value != filterDefaultValues[i]) {
                             filterGyroSliderUnavailable = true;
+                            console.log(item);
                         }
                     } else {
-                        if (FILTER_CONFIG[key] != Math.round(FILTER_DEFAULT[key] * dtermFilterSliderValue) && FILTER_CONFIG[key] != FILTER_DEFAULT[key]) {
+                        if (value != Math.round(filterDefaultValues[i] * dtermFilterSliderValue) && value != filterDefaultValues[i]) {
                             filterDTermSliderUnavailable = true;
+                            console.log(item);
                         }
                     }
-                }
+                });
                 // update slider opacities
                 if (pidSlidersUnavailable) {
                     $('.tuningPIDSliders').css('opacity', 0.3);
@@ -1572,13 +1579,7 @@ TABS.pid_tuning.initialize = function (callback) {
                 $('output[name="tuningResponseSlider-number"]').val(FFGainSliderValue);
                 calculateNewPids();
             });
-            $('#tuningPDRatioSlider').mouseup(function() {
-                updateSliderDisplay();
-            });
-            $('#tuningPDGainSlider').mouseup(function() {
-                updateSliderDisplay();
-            });
-            $('#tuningResponseSlider').mouseup(function() {
+            $('#tuningPDRatioSlider, #tuningPDGainSlider, #tuningResponseSlider').mouseup(function() {
                 updateSliderDisplay();
             });
 
@@ -1601,7 +1602,6 @@ TABS.pid_tuning.initialize = function (callback) {
                 $('.pid_filter input[name="gyroLowpassDynMaxFrequency"]').val(Math.min(Math.round(FILTER_DEFAULT.gyro_lowpass_dyn_max_hz * gyroFilterSliderValue), 1000));
                 $('.pid_filter input[name="gyroLowpass2Frequency"]').val(Math.round(FILTER_DEFAULT.gyro_lowpass2_hz * gyroFilterSliderValue));
                 calculateFilterLatency();
-                $(this).css('opacity', '');
             });
             $('#tuningDTermFilterSlider').on('input', function () {
                 dtermFilterSliderValue = $(this).val()/1000;
@@ -1610,21 +1610,18 @@ TABS.pid_tuning.initialize = function (callback) {
                 $('.pid_filter input[name="dtermLowpassDynMaxFrequency"]').val(Math.round(FILTER_DEFAULT.dterm_lowpass_dyn_max_hz * dtermFilterSliderValue));
                 $('.pid_filter input[name="dtermLowpass2Frequency"]').val(Math.round(FILTER_DEFAULT.dterm_lowpass2_hz * dtermFilterSliderValue));
                 calculateFilterLatency();
-                $(this).css('opacity', '');
             });
-
-            $('#pid_main input').on('input', function() {
+            $('#tuningGyroFilterSlider, #tuningDTermFilterSlider').mouseup(function() {
                 updateSliderDisplay();
             });
 
+            $('#pid_main input, .pid_filter input, .pid_filter select').on('input', function() {
+                updateSliderDisplay();
+            });
             updateSliderDisplay();
-
         } else {
             $('.tuningPIDSliders').hide();
             $('.tuningFilterSliders').hide();
-            $('.expertTuningMode').hide();
-            $('.expertTuningModeDisabled').hide();
-            $('.expertTuningModeEnabled').hide();
         }
 
         if (semver.gte(CONFIG.apiVersion, "1.16.0")) {
