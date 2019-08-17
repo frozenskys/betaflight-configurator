@@ -1482,18 +1482,6 @@
     "pidTuningDMinAdvanceHelp": {
         "message": "Makes D min go up earlier by using setpoint instead of gyro to determine sharp moves."
     },
-    "pidTuningDialogExpertModeProfileResetTitle": {
-        "message": "Expert Mode Disable"
-    },
-    "pidTuningDialogExpertModeProfileResetNote": {
-        "message": "Disabling expert tuning mode will reset PID and filter settings to default. <br><span class=\"message-negative\"><b>Warning:</b></span> Gyro filter settings will be reset to default in ALL profiles."
-    },
-    "pidTuningDialogExpertModeProfileResetConfirm": {
-        "message": "Confirm Disable Expert Tuning Mode"
-    },
-    "pidTuningDialogExpertModeProfileResetClose": {
-        "message": "Keep Expert Tuning Mode Enabled"
-    },
     "pidTuningPidSettings": {
         "message": "PID Controller Settings"
     },
@@ -4876,18 +4864,6 @@
     },
     "pidTuningRateProfileTip": {
         "message": "Up to 3 different rateprofiles per profile can be stored on the flight controller. The rateprofiles include the settings for 'RC Rate', 'Rate', 'RC Expo', 'Throttle', and 'TPA'. Switching between rateprofiles is possible in-flight, by setting up a 3 position switch for 'Rate Profile Selection' on the 'Adjustments' tab."
-    },
-    "pidTuningExpertModeTip": {
-        "message": "Enable expert tuning mode to get access to full settings or disable it for beginner mode with easy tuning sliders."
-    },
-    "pidTuningExpertModeHead": {
-        "message": "Expert Tuning"
-    },
-    "pidTuningExpertModeDisabled": {
-        "message": "<strong>Note:</strong> Enable expert tuning mode to get access to full PID and filter settings or use the provided tuning sliders to adjust values accordingly. It is strongly recommended for beginners to use the sliders instead of manually tuning."
-    },
-    "pidTuningExpertModeEnabled": {
-        "message": "<strong>Note:</strong> Expert tuning mode is enabled, all PID and filter settings are available to configure. Disable the expert tuning mode to use more beginner friendly tuning sliders."
     },
     "pidTuningRateSetup": {
         "message": "Basic/Acro Rates"

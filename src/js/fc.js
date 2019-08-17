@@ -518,23 +518,6 @@ var FC = {
             30, 80,  0,  0, 70,
         ];
 
-        DEFAULT_ADVANCED_TUNING = {
-            feedforwardTransition:      0,
-            acroTrainerAngleLimit:     20,
-            throttleBoost:              5,
-            absoluteControlGain:        0,
-            itermRotation:              0,
-            vbatPidCompensation:        0,
-            itermRelax:                 1,
-            itermRelaxType:             1,
-            itermRelaxCutoff:          20,
-            useIntegratedYaw:           0,
-            dMinGain:                  27,
-            dMinAdvance:               20,
-            antiGravityMode:            0,
-            itermAcceleratorGain:    5000,
-        };
-
         DEFAULT_OTHER = {
             // approximate filter latency at 50% throttle
             gyroFilterLatency:     1.2,
@@ -644,12 +627,6 @@ var FC = {
         var versionPidDefaults = DEFAULT_PIDS;
         // if defaults change they should go here
         return versionPidDefaults;
-    },
-
-    getAdvancedTuningDefaults: function() {
-        var versionAdvancedTuningDefaults = DEFAULT_ADVANCED_TUNING;
-        // if defaults change they should go here
-        return versionAdvancedTuningDefaults;
     },
 
     getOtherDefaults: function() {

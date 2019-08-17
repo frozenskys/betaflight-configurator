@@ -581,10 +581,6 @@
     width: calc(100% - 10px);
 }
 
-.tab-pid_tuning .expertTuningMode {
-    width: 130px;
-}
-
 .tab-pid_tuning .delta {
     width: 150px;
 }
@@ -852,8 +848,4 @@
 .tab-pid_tuning .sliderLabels span {
     color:white;
     font-size: 12px;
-}
-
-.tab-pid_tuning .expertTuningMode .bottomarea .switchery {
-    margin-left: 30%;
 }
