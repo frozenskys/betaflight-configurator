@@ -3091,6 +3091,18 @@
     "pidTuningSliderHighFiltering": {
         "message": "High Filtering"
     },
+    "pidTuningSliderHighFilteringHelp": {
+        "message": "High filtering will result in smoother flight and cooler motors but will introduce more PID signal delay. It is recommended for quads with bigger prop sizes."
+    },
+    "pidTuningSliderDefaultFilteringHelp": {
+        "message": "Default filtering will work on most 5 inch quads. It is a good compromise between latency and motor temperatures."
+    },
+    "pidTuningSliderLowFilteringHelp": {
+        "message": "Low filtering will result in potentially warmer or hot motors, but will have less PID signal delay. Only newly built quads with fresh props might be fine at this setting."
+    },
+    "pidTuningSliderUltraLowFilteringHelp": {
+        "message": "Ultra low filtering is for super clean quads with little motor noise and frame resonance. It may cause hot or burned motors, especially after a crash and flying with bent props."
+    },
     "pidTuningGyroFilterSliderMultiplier": {
         "message": "Gyro Filter Multiplier:"
     },
@@ -3126,6 +3138,24 @@
     },
     "pidTuningResponseSliderHigh": {
         "message": "High Stick Response"
+    },
+    "pidTuningPDRatioSliderLowHelp":{
+        "message": "Lower P/D ratio will lower overall response but will also reduce a possibility of fast bounceback after a flip or roll."
+    },
+    "pidTuningPDRatioSliderHighHelp":{
+        "message": "Higher P/D ratio provides faster reponse and better propwash handling. However, if your P/D ratio is too high you will get oscillations after a flip or roll and extended oscillations during prop wash."
+    },
+    "pidTuningPDGainSliderLowHelp":{
+        "message": "Lower P/D gain will result in cooler motors but will result in more propwash oscillation. Too low value may cause the quad to be unstable."
+    },
+    "pidTuningPDGainSliderHighHelp":{
+        "message": "P and D terms work together to reduce propwash. Higher values will increase motor heat and could increase oscillations during smooth forward flight due to higher D term gains."
+    },
+    "pidTuningResponseSliderLowHelp":{
+        "message": "Lower values will worsen the stick response and may result in slow bounceback at the end of a flip or roll (I-term windup)."
+    },
+    "pidTuningResponseSliderHighHelp":{
+        "message": "Higher value will have a better stick response for sharp moves. However, too high of values can cause overshoots and fast bounceback at the end of a flip or roll."
     },
     "pidTuningGyroLowpassFiltersGroup": {
         "message": "Gyro Lowpass Filters"
