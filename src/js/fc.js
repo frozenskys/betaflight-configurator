@@ -521,6 +521,8 @@ var FC = {
             // approximate filter latency at 50% throttle
             gyroFilterLatency:     1.2,
             dTermFilterLatency:    2.3,
+            // feedforward to d gain ratio
+            FDRatio:                20,
         };
     },
 

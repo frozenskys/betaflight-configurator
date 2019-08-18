@@ -1468,13 +1468,14 @@ TABS.pid_tuning.initialize = function (callback) {
                 filterDefaultValues.splice(2, 0, FC.FILTER_TYPE_FLAGS.PT1);
                 filterDefaultValues.splice(17, 0, FC.FILTER_TYPE_FLAGS.PT1);
                 // iterate inputs and selects and compare with default*slidervalue to see if changed manually or by sliders
+                // only values changed by slider get checked, this allows users to add static notches and change dynamic notch settings
                 $('.pid_filter input[type=number], .pid_filter select').each(function(i, item) {
                     let value = $(this).val();
-                    if (i < 15) {
+                    if (i < 7) {
                         if (value != Math.min(Math.round(filterDefaultValues[i] * gyroFilterSliderValue), 1000) && value != filterDefaultValues[i]) {
                             filterSliderUnavailable = true;
                         }
-                    } else {
+                    } else if (i >= 15 && i < 22) {
                         if (value != Math.round(filterDefaultValues[i] * dtermFilterSliderValue) && value != filterDefaultValues[i]) {
                             filterSliderUnavailable = true;
                         }
@@ -1482,18 +1483,14 @@ TABS.pid_tuning.initialize = function (callback) {
                 });
                 // update slider opacities
                 if (pidSlidersUnavailable) {
-                    $('.tuningPIDSliders').css('opacity', 0.3);
+                    $('.tuningPIDSliders').css('opacity', 0.5);
                 } else {
                     $('.tuningPIDSliders').css('opacity', '');
                 }
                 if (filterSliderUnavailable) {
-                    $('.tuningFilterSliders').css('opacity', 0.3);
-                    $('#tuningFilterSlider').attr('disabled', true);
-                    $('.filterSliderUnavailable').show();
+                    $('.tuningFilterSliders').css('opacity', 0.5);
                 } else {
                     $('.tuningFilterSliders').css('opacity', '');
-                    $('#tuningFilterSlider').removeAttr('disabled');
-                    $('.filterSliderUnavailable').hide();
                 }
             }
 
@@ -1519,15 +1516,23 @@ TABS.pid_tuning.initialize = function (callback) {
                 // dmin
                 ADVANCED_TUNING.dMinRoll = PID_DEFAULT[3] + Number(PDGainSliderValue);
                 ADVANCED_TUNING.dMinPitch = PID_DEFAULT[8] + Number(PDGainSliderValue);
-                // dmax
-                PIDs[0][2] = PID_DEFAULT[2] + Number(PDGainSliderValue);
-                PIDs[1][2] = PID_DEFAULT[7] + Number(PDGainSliderValue);
+                // get current dmax
+                let currentDMinRoll = PID_DEFAULT[2] + Number(PDGainSliderValue);
+                let currentDMinPitch = PID_DEFAULT[7] + Number(PDGainSliderValue);
                 // p
                 PIDs[0][0] = Math.round(ADVANCED_TUNING.dMinRoll * PDRatioSliderValue);
                 PIDs[1][0] = Math.round(ADVANCED_TUNING.dMinPitch * PDRatioSliderValue);
                 // ff
                 ADVANCED_TUNING.feedforwardRoll = Math.round(PID_DEFAULT[4] * FFGainSliderValue);
                 ADVANCED_TUNING.feedforwardPitch = Math.round(PID_DEFAULT[9] * FFGainSliderValue);
+                // set dmax -- scale it with FF so only goes up from default per FDRatio, if gain <1 then only change FF
+                if (FFGainSliderValue > 1) {
+                    PIDs[0][2] = currentDMinRoll + Math.round((ADVANCED_TUNING.feedforwardRoll - PID_DEFAULT[4]) / OTHER_DEFAULT.FDRatio);
+                    PIDs[1][2] = currentDMinPitch + Math.round((ADVANCED_TUNING.feedforwardPitch - PID_DEFAULT[9]) / OTHER_DEFAULT.FDRatio);
+                } else {
+                    PIDs[0][2] = currentDMinRoll;
+                    PIDs[1][2] = currentDMinPitch;
+                }
 
                 updatePIDValuesInFormsLite();
             }
@@ -1585,6 +1590,7 @@ TABS.pid_tuning.initialize = function (callback) {
                 $('.pid_filter input[name="gyroLowpassDynMinFrequency"]').val(Math.round(FILTER_DEFAULT.gyro_lowpass_dyn_min_hz * gyroFilterSliderValue));
                 $('.pid_filter input[name="gyroLowpassDynMaxFrequency"]').val(Math.min(Math.round(FILTER_DEFAULT.gyro_lowpass_dyn_max_hz * gyroFilterSliderValue), 1000));
                 $('.pid_filter input[name="gyroLowpass2Frequency"]').val(Math.round(FILTER_DEFAULT.gyro_lowpass2_hz * gyroFilterSliderValue));
+                // dterm goes max to 2x defaults instead of 3x like gyro
                 dtermFilterSliderValue = ($(this).val() - 1000) / 2000 + 1;
                 $('output[name="tuningDTermFilterSlider-number"]').val(dtermFilterSliderValue + 'x');
                 $('.pid_filter input[name="dtermLowpassDynMinFrequency"]').val(Math.round(FILTER_DEFAULT.dterm_lowpass_dyn_min_hz * dtermFilterSliderValue));
@@ -1597,10 +1603,11 @@ TABS.pid_tuning.initialize = function (callback) {
                 updateSliderDisplay();
             });
 
-            $('#pid_main input, .pid_filter input, .pid_filter select').on('input', function() {
+            // update on ROLL or PITCH changes(yaw has no slider still so it can be manually changed) or any filter setting changes
+            $('#pid_main .ROLL input, #pid_main .PITCH input, .pid_filter input, .pid_filter select').on('input', function() {
                 updateSliderDisplay();
             });
-
+            // update on filter switch changes
             $('.inputSwitch input').change(function() {
                 updateSliderDisplay();
             });

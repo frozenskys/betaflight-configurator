@@ -3110,10 +3110,7 @@
         "message": "D Term Filter Multiplier:"
     },
     "pidTuningFilterLatency": {
-        "message": "Approximate Filter Latency:"
-    },
-    "pidTuningFilterSliderUnavailable": {
-        "message": "<strong>Note:</strong> Manual filter value changes have been detected and the filter tuning slider has been disabled. To enable it please revert any manual changes."
+        "message": "Lowpass Filters Latency:"
     },
     "pidTuningPDRatioSlider": {
         "message": "P/D Ratio:"
