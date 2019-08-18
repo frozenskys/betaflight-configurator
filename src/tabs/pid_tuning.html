@@ -130,7 +130,7 @@
                     </div>
 
                     <!-- TUNING SLIDERS-->
-                    <div class="gui_box grey topspacer tuningPIDSliders">
+                    <div class="gui_box grey topspacer tuningPIDSliders noBackground">
                         <table class="sliderLabels">
                             <th>
                                 <div>
@@ -149,7 +149,7 @@
                                 </div>
                             </th>
                         </table>
-                        <input type="range" min="500" max="3000" step="100" class="tuningSlider" id="tuningPDRatioSlider" />
+                        <input type="range" min="500" max="2500" step="100" class="tuningSlider" id="tuningPDRatioSlider" />
                     </div>
 
                     <div class="gui_box grey topspacer tuningPIDSliders">
@@ -171,7 +171,7 @@
                                 </div>
                             </th>
                         </table>
-                        <input type="range" min="-10" max="40" step="1" class="tuningSlider" id="tuningPDGainSlider" />
+                        <input type="range" min="-10" max="25" step="1" class="tuningSlider" id="tuningPDGainSlider" />
                     </div>
 
                     <div class="gui_box grey topspacer tuningPIDSliders">
@@ -193,7 +193,7 @@
                                 </div>
                             </th>
                         </table>
-                        <input type="range" min="700" max="5000" step="100" class="tuningSlider" id="tuningResponseSlider" />
+                        <input type="range" min="700" max="4000" step="100" class="tuningSlider" id="tuningResponseSlider" />
                     </div>
 
                     <!-- Pid controller advanced settings -->
@@ -824,6 +824,11 @@
                         <p i18n="pidTuningDynamicNotchFilterDisabledWarning"></p>
                     </div>
                 </div>
+                <div class="note filterSliderUnavailable">
+                    <div class="note_spacer">
+                        <p i18n="pidTuningFilterSliderUnavailable"></p>
+                    </div>
+                </div>
 
                 <!-- Filter Slider -->
                 <div class="gui_box grey topspacer tuningFilterSliders">
@@ -865,8 +870,7 @@
                             </div>
                         </th>
                     </table>
-                    <input type="range" min="500" max="3000" step="100" class="tuningSlider" id="tuningGyroFilterSlider" />
-                    <input type="range" min="500" max="3000" step="100" class="tuningSlider" id="tuningDTermFilterSlider" />
+                    <input type="range" min="500" max="3000" step="100" class="tuningSlider" id="tuningFilterSlider" />
                 </div>
 
                 <div class="cf_column two_columns">

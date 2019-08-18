@@ -3112,6 +3112,9 @@
     "pidTuningFilterLatency": {
         "message": "Approximate Filter Latency:"
     },
+    "pidTuningFilterSliderUnavailable": {
+        "message": "<strong>Note:</strong> Manual filter value changes have been detected and the filter tuning slider has been disabled. To enable it please revert any manual changes."
+    },
     "pidTuningPDRatioSlider": {
         "message": "P/D Ratio:"
     },
