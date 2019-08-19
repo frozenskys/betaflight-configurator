@@ -785,13 +785,13 @@
 
 .tab-pid_tuning .tuningSlider {
     -webkit-appearance: none;
-    width: calc(100% - 12px);
+    width: calc(100% - 14px);
     height: 15px;
     border-radius: 5px;   
     outline: none;
     opacity: 0.8;
     transition: opacity .2s;
-    margin: 6px;
+    margin: 7px;
     background: none;
 }
 
@@ -817,13 +817,13 @@
 
 .tab-pid_tuning .tuningSlider::-webkit-slider-thumb {
     -webkit-appearance: none;
-    width: 25px;
-    height: 25px;
+    width: 23px;
+    height: 23px;
     border-radius: 50%;
     background: rgb(255, 187, 42);
     cursor: pointer;
     position: relative;
-    bottom: 5px;
+    bottom: 4px;
 }
 
 .tab-pid_tuning .sliderLabels th {

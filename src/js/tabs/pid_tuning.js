@@ -164,11 +164,9 @@ TABS.pid_tuning.initialize = function (callback) {
             $('.pid_filter select[name="dtermLowpassType"]').val(FILTER_CONFIG.dterm_lowpass_type);
             $('.antigravity input[name="itermThrottleThreshold"]').val(ADVANCED_TUNING.itermThrottleThreshold);
             $('.antigravity input[name="itermAcceleratorGain"]').val(ADVANCED_TUNING.itermAcceleratorGain / 1000);
-            if (FEATURE_CONFIG.features.isEnabled('ANTI_GRAVITY')) {
-                $('.antigravity').show();
-            } else {
-                $('.antigravity').hide();
-            }
+            // only shows on or off
+            $('#antiGravitySwitch').prop('checked', FEATURE_CONFIG.features.isEnabled('ANTI_GRAVITY'));
+            $('#antiGravitySwitch').attr('disabled', true);
         } else {
             $('.dtermLowpassType').hide();
             $('.antigravity').hide();
@@ -195,6 +193,7 @@ TABS.pid_tuning.initialize = function (callback) {
             $('.gyroLowpass2').hide();
             $('.gyroLowpass2Type').hide();
             $('.dtermLowpass2').hide();
+            $('#pid_main .pid_titlebar2 th').attr('colspan', 4);
         }
 
         if (semver.gte(CONFIG.apiVersion, "1.40.0")) {
@@ -293,13 +292,11 @@ TABS.pid_tuning.initialize = function (callback) {
             antiGravityModeSelect.change(function () {
                 var antiGravityModeValue = $('.antigravity select[id="antiGravityMode"]').val();
 
-                // Smooth
+                // Smooth removes threshold
                 if (antiGravityModeValue == 0) {
-                    $('.antigravity  table th:nth-child(3)').hide();
-                    $('.antigravity  table td:nth-child(3)').hide();
+                    $('.antiGravityThres').hide();
                 } else {
-                    $('.antigravity  table th:nth-child(3)').show();
-                    $('.antigravity  table td:nth-child(3)').show();
+                    $('.antiGravityThres').show();
                 }
             });
 
@@ -412,6 +409,32 @@ TABS.pid_tuning.initialize = function (callback) {
             var dMinElement= $('.pid_tuning input[name="dMinYaw"]');
             adjustDMin($(this), dMinElement);
         }).change();
+
+        var dMinSwitch = $('#dMinSwitch');
+        dMinSwitch.prop('checked', ADVANCED_TUNING.dMinRoll > 0 || ADVANCED_TUNING.dMinPitch > 0 || ADVANCED_TUNING.dMinYaw > 0);
+        dMinSwitch.change(function() {
+            var checked = $(this).is(':checked');
+            if (checked) {
+                $('.pid_tuning input[name="dMinRoll"]').val(ADVANCED_TUNING.dMinRoll);
+                $('.pid_tuning input[name="dMinPitch"]').val(ADVANCED_TUNING.dMinPitch);
+                $('.pid_tuning input[name="dMinYaw"]').val(ADVANCED_TUNING.dMinYaw);
+                $('.dminGroup .suboption').show();
+                $('#pid_main tr :nth-child(5)').show();
+                $('#pid_main .pid_titlebar2 th').attr('colspan', 6);
+                $('.helpicon[i18n_title="pidTuningPidTuningTipFeedforward"]').hide();
+                $('.helpicon[i18n_title="pidTuningPidTuningTipDMin"]').show();
+            } else {
+                $('.pid_tuning input[name="dMinRoll"]').val(0);
+                $('.pid_tuning input[name="dMinPitch"]').val(0);
+                $('.pid_tuning input[name="dMinYaw"]').val(0);
+                $('.dminGroup .suboption').hide();
+                $('#pid_main tr :nth-child(5)').hide();
+                $('#pid_main .pid_titlebar2 th').attr('colspan', 5);
+                $('.helpicon[i18n_title="pidTuningPidTuningTipFeedforward"]').show();
+                $('.helpicon[i18n_title="pidTuningPidTuningTipDMin"]').hide();
+            }
+        });
+        dMinSwitch.change();
 
         $('input[id="gyroNotch1Enabled"]').change(function() {
             var checked = $(this).is(':checked');
@@ -1616,7 +1639,6 @@ TABS.pid_tuning.initialize = function (callback) {
         } else {
             $('.tuningPIDSliders').hide();
             $('.tuningFilterSliders').hide();
-            $('.filterSlidersUnavailable').hide();
         }
 
         if (semver.gte(CONFIG.apiVersion, "1.16.0")) {
