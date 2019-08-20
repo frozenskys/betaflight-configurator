@@ -127,21 +127,15 @@ TABS.pid_tuning.initialize = function (callback) {
             $('.pid_filter input[name="dTermNotchCutoff"]').val(FILTER_CONFIG.dterm_notch_cutoff);
 
             var dtermSetpointTransitionNumberElement = $('input[name="dtermSetpointTransition-number"]');
-            var dtermSetpointTransitionRangeElement = $('input[name="dtermSetpointTransition-range"]');
             if (semver.gte(CONFIG.apiVersion, "1.38.0")) {
                 dtermSetpointTransitionNumberElement.attr('min', 0.00);
-                dtermSetpointTransitionRangeElement.attr('min', 0.00);
             } else {
                 dtermSetpointTransitionNumberElement.attr('min', 0.01);
-                dtermSetpointTransitionRangeElement.attr('min', 0.01);
             }
 
             dtermSetpointTransitionNumberElement.val(ADVANCED_TUNING.dtermSetpointTransition / 100);
-            dtermSetpointTransitionRangeElement.val(ADVANCED_TUNING.dtermSetpointTransition / 100);
 
             $('input[name="dtermSetpoint-number"]').val(ADVANCED_TUNING.dtermSetpointWeight / 100);
-            $('input[name="dtermSetpoint-range"]').val(ADVANCED_TUNING.dtermSetpointWeight / 100)
-                                                  .trigger('input'); // trigger adjustRangeElement()
         } else {
             $('.pid_filter .newFilter').hide();
         }
@@ -179,7 +173,12 @@ TABS.pid_tuning.initialize = function (callback) {
                     $('.antigravity .suboption').show();
                     if (ADVANCED_TUNING.antiGravityMode == 0) {
                         $('.antigravity .antiGravityThres').hide();
-                    } 
+                    }
+                    if (semver.gte(CONFIG.apiVersion, "1.40.0")) {
+                        $('.antigravity .antiGravityMode').show();
+                    } else {
+                        $('.antigravity .antiGravityMode').hide();
+                    }
                 } else {
                     $('.antigravity select[id="antiGravityMode"]').val(0);
                     $('.antigravity input[name="itermAcceleratorGain"]').val(1);
@@ -237,6 +236,11 @@ TABS.pid_tuning.initialize = function (callback) {
 
                 if (checked) {
                     $('.itermrelax .suboption').show();
+                    if (semver.gte(CONFIG.apiVersion, "1.42.0")) {
+                        $('.itermRelaxCutoff').show();
+                    } else {
+                        $('.itermRelaxCutoff').hide();
+                    }
                 } else {
                     $('.itermrelax .suboption').hide();
                 }
@@ -299,8 +303,6 @@ TABS.pid_tuning.initialize = function (callback) {
             $('.helpicon[i18n_title="pidTuningPidTuningTipFeedforward"]').hide();
 
             $('#pid-tuning .feedforwardTransition').hide();
-
-            $('.antigravity antiGravityMode').hide();
         }
 
         if (semver.gte(CONFIG.apiVersion, "1.41.0")) {
@@ -340,7 +342,6 @@ TABS.pid_tuning.initialize = function (callback) {
 
         if (semver.gte(CONFIG.apiVersion, "1.42.0")) {
             $('.smartfeedforward').hide();
-            $('.itermRelaxCutoff').show();
 
             if (FEATURE_CONFIG.features.isEnabled('DYNAMIC_FILTER')) {
                 $('.dynamicNotch').show();
@@ -391,31 +392,33 @@ TABS.pid_tuning.initialize = function (callback) {
             adjustDMin($(this), dMinElement);
         }).change();
 
-        var dMinSwitch = $('#dMinSwitch');
-        dMinSwitch.prop('checked', ADVANCED_TUNING.dMinRoll > 0 || ADVANCED_TUNING.dMinPitch > 0 || ADVANCED_TUNING.dMinYaw > 0);
-        dMinSwitch.change(function() {
-            var checked = $(this).is(':checked');
-            if (checked) {
-                $('.pid_tuning input[name="dMinRoll"]').val(ADVANCED_TUNING.dMinRoll);
-                $('.pid_tuning input[name="dMinPitch"]').val(ADVANCED_TUNING.dMinPitch);
-                $('.pid_tuning input[name="dMinYaw"]').val(ADVANCED_TUNING.dMinYaw);
-                $('.dminGroup .suboption').show();
-                $('#pid_main tr :nth-child(5)').show();
-                $('#pid_main .pid_titlebar2 th').attr('colspan', 6);
-                $('.helpicon[i18n_title="pidTuningPidTuningTipFeedforward"]').hide();
-                $('.helpicon[i18n_title="pidTuningPidTuningTipDMin"]').show();
-            } else {
-                $('.pid_tuning input[name="dMinRoll"]').val(0);
-                $('.pid_tuning input[name="dMinPitch"]').val(0);
-                $('.pid_tuning input[name="dMinYaw"]').val(0);
-                $('.dminGroup .suboption').hide();
-                $('#pid_main tr :nth-child(5)').hide();
-                $('#pid_main .pid_titlebar2 th').attr('colspan', 5);
-                $('.helpicon[i18n_title="pidTuningPidTuningTipFeedforward"]').show();
-                $('.helpicon[i18n_title="pidTuningPidTuningTipDMin"]').hide();
-            }
-        });
-        dMinSwitch.change();
+        if (semver.gte(CONFIG.apiVersion, "1.41.0")) {
+            var dMinSwitch = $('#dMinSwitch');
+            dMinSwitch.prop('checked', ADVANCED_TUNING.dMinRoll > 0 || ADVANCED_TUNING.dMinPitch > 0 || ADVANCED_TUNING.dMinYaw > 0);
+            dMinSwitch.change(function() {
+                var checked = $(this).is(':checked');
+                if (checked) {
+                    $('.pid_tuning input[name="dMinRoll"]').val(ADVANCED_TUNING.dMinRoll);
+                    $('.pid_tuning input[name="dMinPitch"]').val(ADVANCED_TUNING.dMinPitch);
+                    $('.pid_tuning input[name="dMinYaw"]').val(ADVANCED_TUNING.dMinYaw);
+                    $('.dminGroup .suboption').show();
+                    $('#pid_main tr :nth-child(5)').show();
+                    $('#pid_main .pid_titlebar2 th').attr('colspan', 6);
+                    $('.helpicon[i18n_title="pidTuningPidTuningTipFeedforward"]').hide();
+                    $('.helpicon[i18n_title="pidTuningPidTuningTipDMin"]').show();
+                } else {
+                    $('.pid_tuning input[name="dMinRoll"]').val(0);
+                    $('.pid_tuning input[name="dMinPitch"]').val(0);
+                    $('.pid_tuning input[name="dMinYaw"]').val(0);
+                    $('.dminGroup .suboption').hide();
+                    $('#pid_main tr :nth-child(5)').hide();
+                    $('#pid_main .pid_titlebar2 th').attr('colspan', 5);
+                    $('.helpicon[i18n_title="pidTuningPidTuningTipFeedforward"]').show();
+                    $('.helpicon[i18n_title="pidTuningPidTuningTipDMin"]').hide();
+                }
+            });
+            dMinSwitch.change();
+        }
 
         $('input[id="gyroNotch1Enabled"]').change(function() {
             var checked = $(this).is(':checked');
@@ -834,7 +837,6 @@ TABS.pid_tuning.initialize = function (callback) {
 
         if (semver.lt(CONFIG.apiVersion, "1.39.0")) {
             $('input[name="dtermSetpoint-number"]').attr('max', self.SETPOINT_WEIGHT_RANGE_LEGACY);
-            $('input[name="dtermSetpoint-range"]').attr('max', self.SETPOINT_WEIGHT_RANGE_LEGACY);
         }
 
         // translate to user-selected language
@@ -1028,7 +1030,6 @@ TABS.pid_tuning.initialize = function (callback) {
             });
 
             var dtermTransitionNumberElement = $('input[name="dtermSetpointTransition-number"]');
-            var dtermTransitionRangeElement = $('input[name="dtermSetpointTransition-range"]');
             var dtermTransitionWarningElement = $('#pid-tuning .dtermSetpointTransitionWarning');
 
             function checkUpdateDtermTransitionWarning(value) {
@@ -1043,36 +1044,8 @@ TABS.pid_tuning.initialize = function (callback) {
             //Use 'input' event for coupled controls to allow synchronized update
             dtermTransitionNumberElement.on('input', function () {
                 checkUpdateDtermTransitionWarning($(this).val());
-                dtermTransitionRangeElement.val($(this).val());
-            });
-            dtermTransitionRangeElement.on('input', function () {
-                checkUpdateDtermTransitionWarning($(this).val());
-                dtermTransitionNumberElement.val($(this).val());
             });
 
-            var dtermNumberElement = $('input[name="dtermSetpoint-number"]');
-            var dtermRangeElement = $('input[name="dtermSetpoint-range"]');
-
-            function adjustRangeElement(value) {
-                var range = dtermRangeElement.attr('max');
-                if (value >= self.SETPOINT_WEIGHT_RANGE_LOW && range <= self.SETPOINT_WEIGHT_RANGE_LOW) {
-                    dtermRangeElement.attr('max', self.SETPOINT_WEIGHT_RANGE_HIGH);
-                } else if (value < self.SETPOINT_WEIGHT_RANGE_LOW && range > self.SETPOINT_WEIGHT_RANGE_LOW) {
-                    dtermRangeElement.attr('max', self.SETPOINT_WEIGHT_RANGE_LOW);
-                }
-            }
-			
-            //Use 'input' event for coupled controls to allow synchronized update
-            dtermNumberElement.on('input', function () {
-                var value = $(this).val();
-                adjustRangeElement(value);
-                dtermRangeElement.val(value);
-            });
-            dtermRangeElement.on('input', function () {
-                var value = $(this).val();
-                adjustRangeElement(value);
-                dtermNumberElement.val(value);
-            });
         } else {
             $('.tab-pid_tuning .rate_profile').hide();
 
