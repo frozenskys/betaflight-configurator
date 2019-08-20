@@ -396,9 +396,9 @@ TABS.pid_tuning.initialize = function (callback) {
         dMinSwitch.change(function() {
             var checked = $(this).is(':checked');
             if (checked) {
-                $('.pid_tuning input[name="dMinRoll"]').val(Math.max(ADVANCED_TUNING.dMinRoll, PID_DEFAULT[3]));
-                $('.pid_tuning input[name="dMinPitch"]').val(Math.max(ADVANCED_TUNING.dMinPitch, PID_DEFAULT[8]));
-                $('.pid_tuning input[name="dMinYaw"]').val(Math.max(ADVANCED_TUNING.dMinYaw, PID_DEFAULT[13]));
+                $('.pid_tuning input[name="dMinRoll"]').val(ADVANCED_TUNING.dMinRoll);
+                $('.pid_tuning input[name="dMinPitch"]').val(ADVANCED_TUNING.dMinPitch);
+                $('.pid_tuning input[name="dMinYaw"]').val(ADVANCED_TUNING.dMinYaw);
                 $('.dminGroup .suboption').show();
                 $('#pid_main tr :nth-child(5)').show();
                 $('#pid_main .pid_titlebar2 th').attr('colspan', 6);
