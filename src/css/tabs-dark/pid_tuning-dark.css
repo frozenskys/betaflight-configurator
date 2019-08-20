@@ -1,12 +1,10 @@
 .tab-pid_tuning .profile .helpicon,
-.tab-pid_tuning .rate_profile .helpicon,
-.tab-pid_tuning .expertTuningMode .helpicon {
+.tab-pid_tuning .rate_profile .helpicon {
     background-image: url(../../images/icons/cf_icon_info_grey.svg);
     opacity: 0.4;
 }
 .tab-pid_tuning .profile .helpicon:hover,
-.tab-pid_tuning .rate_profile .helpicon:hover,
-.tab-pid_tuning .expertTuningMode .helpicon:hover {
+.tab-pid_tuning .rate_profile .helpicon:hover {
     opacity: 1;
 }
 
