@@ -182,6 +182,8 @@
 .tab-pid_tuning table.compensation td:first-child {
     width: 65px;
     text-align: center;
+    vertical-align: top;
+    padding-top: 5px;
 }
 
 .tab-pid_tuning table.compensation td:last-child {
@@ -190,22 +192,27 @@
 }
 
 .tab-pid_tuning table.compensation .suboption {
-    margin-left: 2%;
     white-space: nowrap;
     display: flex;
     align-items: center;
+    padding-bottom: 2px;
 }
 
-.tab-pid_tuning table.compensation .suboption select{
+.tab-pid_tuning table.compensation .suboption select {
     text-align-last: left;
     font-size: 1.1em;
     color: darkslategrey;
-    margin-left: 3px;    
 }
 
-.tab-pid_tuning table.compensation .suboption input{
+.tab-pid_tuning table.compensation .suboption input {
     width: 45px;
     padding-left: 3px;
+}
+
+.tab-pid_tuning table.compensation .suboption label {
+    min-width: 12%;
+    margin-right: 5px;
+    text-align: right;
 }
 
 .tab-pid_tuning .pidTuningFeatures td {
