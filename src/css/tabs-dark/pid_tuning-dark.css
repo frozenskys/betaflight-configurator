@@ -249,6 +249,7 @@
 .tab-pid_tuning .sliderLabels th {
     background: #414443;
     color: white;
+    border-right: solid 1px #9c9c9c;
 }
 
 .tab-pid_tuning input:disabled,
@@ -257,4 +258,8 @@
 .tab-pid_tuning .cf select:disabled {
     color: rgb(105, 105, 105);
     background-color: #2d2d2d;
+}
+
+.tab-pid_tuning table.compensation tr {
+    border-bottom: 1px solid #9c9c9c;
 }
