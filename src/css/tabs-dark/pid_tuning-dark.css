@@ -247,12 +247,6 @@
     border: 1px solid #9c9c9c;
 }
 
-.tab-pid_tuning .sliderLabels th {
-    background: #414443;
-    color: white;
-    border-right: solid 1px #9c9c9c;
-}
-
 .tab-pid_tuning input:disabled,
 .tab-pid_tuning .cf input:disabled,
 .tab-pid_tuning select:disabled,

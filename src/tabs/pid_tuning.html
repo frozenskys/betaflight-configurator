@@ -129,73 +129,6 @@
                         </table>
                     </div>
 
-                    <!-- TUNING SLIDERS-->
-                    <div class="gui_box grey topspacer tuningPIDSliders noBackground">
-                        <table class="sliderLabels">
-                            <th>
-                                <div>
-                                    <div i18n="pidTuningPDRatioSliderLow"></div>
-                                    <div class="helpicon cf_tip" i18n_title="pidTuningPDRatioSliderLowHelp"></div>
-                                </div>
-                            </th>
-                            <th>
-                                <span i18n="pidTuningPDRatioSlider"/>
-                                <output type="number" name="tuningPDRatioSlider-number"></output>
-                            </th>
-                            <th>
-                                <div>
-                                    <div i18n="pidTuningPDRatioSliderHigh"></div>
-                                    <div class="helpicon cf_tip" i18n_title="pidTuningPDRatioSliderHighHelp"></div>
-                                </div>
-                            </th>
-                        </table>
-                        <input type="range" min="500" max="2500" step="100" class="tuningSlider" id="tuningPDRatioSlider" />
-                    </div>
-
-                    <div class="gui_box grey topspacer tuningPIDSliders">
-                        <table class="sliderLabels">
-                            <th>
-                                <div>
-                                    <div i18n="pidTuningPDGainSliderLow"></div>
-                                    <div class="helpicon cf_tip" i18n_title="pidTuningPDGainSliderLowHelp"></div>
-                                </div>
-                            </th>
-                            <th>
-                                <span i18n="pidTuningPDGainSlider"/>
-                                <output type="number" name="tuningPDGainSlider-number"></output>
-                            </th>
-                            <th>
-                                <div>
-                                    <div i18n="pidTuningPDGainSliderHigh"></div>
-                                    <div class="helpicon cf_tip" i18n_title="pidTuningPDGainSliderHighHelp"></div>
-                                </div>
-                            </th>
-                        </table>
-                        <input type="range" min="-10" max="25" step="1" class="tuningSlider" id="tuningPDGainSlider" />
-                    </div>
-
-                    <div class="gui_box grey topspacer tuningPIDSliders">
-                        <table class="sliderLabels">
-                            <th>
-                                <div>
-                                    <div i18n="pidTuningResponseSliderLow"></div>
-                                    <div class="helpicon cf_tip" i18n_title="pidTuningResponseSliderLowHelp"></div>
-                                </div>
-                            </th>
-                            <th>
-                                <span i18n="pidTuningResponseSlider"/>
-                                <output type="number" name="tuningResponseSlider-number"></output>
-                            </th>
-                            <th>
-                                <div>
-                                    <div i18n="pidTuningResponseSliderHigh"></div>
-                                    <div class="helpicon cf_tip" i18n_title="pidTuningResponseSliderHighHelp"></div>
-                                </div>
-                            </th>
-                        </table>
-                        <input type="range" min="700" max="4000" step="100" class="tuningSlider" id="tuningResponseSlider" />
-                    </div>
-
                     <!-- BARO, MAG, GPS -->
                     <div id="pid_baro_mag_gps" class="pid_optional needed_by_ALT needed_by_VEL needed_by_MAG needed_by_Pos needed_by_PosR needed_by_NavR gui_box grey topspacer pid_tuning">
                         <table class="pid_titlebar needed_by_ALT needed_by_VEL needed_by_MAG">
@@ -811,49 +744,6 @@
                     <div class="note_spacer">
                         <p i18n="pidTuningDynamicNotchFilterDisabledWarning"></p>
                     </div>
-                </div>
-
-                <!-- Filter Slider -->
-                <div class="gui_box grey topspacer tuningFilterSliders">
-                    <table class="sliderLabels">
-                        <th>
-                            <div>
-                                <div i18n="pidTuningSliderHighFiltering"></div>
-                                <div class="helpicon cf_tip" i18n_title="pidTuningSliderHighFilteringHelp"></div>
-                            </div>
-                        </th>
-                        <th>
-                            <div>
-                                <div i18n="pidTuningSliderDefaultFiltering"></div>
-                                <div class="helpicon cf_tip" i18n_title="pidTuningSliderDefaultFilteringHelp"></div>
-                            </div>
-                        </th>
-                        <th>
-                            <span i18n="pidTuningGyroFilterSliderMultiplier"/>
-                            <output type="number" name="tuningGyroFilterSlider-number"></output>
-                        </th>
-                        <th>
-                            <span i18n="pidTuningFilterLatency"/>
-                            <output type="number" name="tuningFilterLatency-number"></output>
-                        </th>
-                        <th>
-                            <span i18n="pidTuningDTermFilterSliderMultiplier"/>
-                            <output type="number" name="tuningDTermFilterSlider-number"></output>
-                        </th>
-                        <th>
-                            <div>
-                                <div i18n="pidTuningSliderLowFiltering"></div>
-                                <div class="helpicon cf_tip" i18n_title="pidTuningSliderLowFilteringHelp"></div>
-                            </div>
-                        </th>
-                        <th>
-                            <div>
-                                <div i18n="pidTuningSliderUltraLowFiltering"></div>
-                                <div class="helpicon cf_tip" i18n_title="pidTuningSliderUltraLowFilteringHelp"></div>
-                            </div>
-                        </th>
-                    </table>
-                    <input type="range" min="500" max="3000" step="100" class="tuningSlider" id="tuningFilterSlider" />
                 </div>
 
                 <div class="cf_column two_columns">
