@@ -1467,6 +1467,9 @@
     "pidTuningAntiGravityThres": {
         "message": "Threshold"
     },
+    "pidTuningAntiGravityHelp": {
+        "message": "Anti Gravity boosts the I term when fast throttle changes are detected. Higher gain values provide stability and better attitude hold when you pump the throttle."
+    },
     "pidTuningDMin": {
         "message": "D Min",
        "description": "Table header of the D Min feature in the PIDs tab" 
@@ -1475,15 +1478,12 @@
        "message": "Gain",
        "description": "Gain of the D Min feature"
     },
-    "pidTuningDMinGainHelp": {
-        "message": "Adjusts how fast D min gets up to its maximum value and is based on gyro to determine sharp moves and propwash events."
-    },
     "pidTuningDMinAdvance": {
        "message": "Advance",
        "description": "Advance of the D Min feature"
     },
-    "pidTuningDMinAdvanceHelp": {
-        "message": "Makes D min go up earlier by using setpoint instead of gyro to determine sharp moves."
+    "pidTuningDMinHelp": {
+        "message": "Gain adjusts how fast D min gets up to its maximum value and is based on gyro to determine sharp moves and propwash events. Advance makes D min go up earlier by using setpoint instead of gyro to determine sharp moves."
     },
     "pidTuningPidSettings": {
         "message": "PID Controller Settings"
