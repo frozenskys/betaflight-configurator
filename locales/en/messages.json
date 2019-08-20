@@ -1451,7 +1451,7 @@
         "message": "Anti Gravity"
     },
     "pidTuningAntiGravityMode": {
-        "message": "Mode:"
+        "message": "Mode"
     },
     "pidTuningAntiGravityModeOptionSmooth": {
         "message": "Smooth",
@@ -1462,24 +1462,24 @@
         "description": "One of the modes of anti gravity"
     },
     "pidTuningAntiGravityGain": {
-        "message": "Gain:"
+        "message": "Gain"
     },
     "pidTuningAntiGravityThres": {
-        "message": "Threshold:"
+        "message": "Threshold"
     },
     "pidTuningDMin": {
         "message": "D Min",
        "description": "Table header of the D Min feature in the PIDs tab" 
     },
     "pidTuningDMinGain": {
-       "message": "Gain:",
+       "message": "Gain",
        "description": "Gain of the D Min feature"
     },
     "pidTuningDMinGainHelp": {
         "message": "Adjusts how fast D min gets up to its maximum value and is based on gyro to determine sharp moves and propwash events."
     },
     "pidTuningDMinAdvance": {
-       "message": "Advance:",
+       "message": "Advance",
        "description": "Advance of the D Min feature"
     },
     "pidTuningDMinAdvanceHelp": {
@@ -3305,7 +3305,7 @@
         "message": "Limits the accumulation of I Term when fast movements happen. This helps specially to reduce the bounceback at the end of rolls and other fast movements. You can choose the axes in which this is active, and if the fast movement is detectd using the Gyro or the Setpoint (stick)."
     },
     "pidTuningItermRelaxAxes": {
-        "message": "Axes:"
+        "message": "Axes"
     },
     "pidTuningItermRelaxAxesOptionRP": {
         "message": "RP"
@@ -3320,7 +3320,7 @@
         "message": "RPY (increment only)"
     },
     "pidTuningItermRelaxType": {
-        "message": "Type:"
+        "message": "Type"
     },
     "pidTuningItermRelaxTypeOptionGyro": {
         "message": "Gyro"
@@ -3329,7 +3329,7 @@
         "message": "Setpoint"
     },
     "pidTuningItermRelaxCutoff": {
-        "message": "Cutoff:"
+        "message": "Cutoff"
     },
     "pidTuningAbsoluteControlGain": {
         "message": "Absolute Control"

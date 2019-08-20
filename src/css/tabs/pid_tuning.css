@@ -192,6 +192,7 @@
 }
 
 .tab-pid_tuning table.compensation .suboption {
+    margin-left: 2%;
     white-space: nowrap;
     display: flex;
     align-items: center;
@@ -199,20 +200,19 @@
 }
 
 .tab-pid_tuning table.compensation .suboption select {
-    text-align-last: left;
+    width: 100%;
+    max-width: 80px;
+    text-align-last: right;
     font-size: 1.1em;
     color: darkslategrey;
 }
 
 .tab-pid_tuning table.compensation .suboption input {
-    width: 45px;
-    padding-left: 3px;
+    width: 80px;
 }
 
 .tab-pid_tuning table.compensation .suboption label {
-    min-width: 12%;
-    margin-right: 5px;
-    text-align: right;
+    margin-left: 5px;
 }
 
 .tab-pid_tuning .pidTuningFeatures td {
@@ -262,18 +262,21 @@
     height: 20px;
     line-height: 20px;
     text-align: right;
-    border: 0px solid #ccc;
-    border-radius: 0px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
 }
 
 .tab-pid_tuning .subtab-filter table input,
 .tab-pid_tuning .subtab-filter table select {
     width: 77px;
     float: right;
+    box-sizing: border-box;
 }
 
 .tab-pid_tuning table select {
     text-align-last: right;
+    border-radius: 3px;
+    border: 1px solid #ccc;
 }
 
 .tab-pid_tuning .tab_container {
@@ -866,4 +869,16 @@
 .tab-pid_tuning .sliderLabels span {
     color:white;
     font-size: 12px;
+}
+
+.tab-pid_tuning .subtab-rates {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.tab-pid_tuning .subtab-rates .cf_column {
+    min-width: 390px;
+    flex: 1;
 }

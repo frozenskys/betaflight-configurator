@@ -495,32 +495,32 @@
                                     </span>
 
                                     <span class="suboption">
-                                        <label for="itermrelaxAxes">
-                                            <span i18n="pidTuningItermRelaxAxes" />
-                                        </label>
                                         <select id="itermrelaxAxes">
                                             <option i18n="pidTuningItermRelaxAxesOptionRP"     value="1">
                                             <option i18n="pidTuningItermRelaxAxesOptionRPY"    value="2"/>
                                             <option i18n="pidTuningItermRelaxAxesOptionRPInc"  value="3"/>
                                             <option i18n="pidTuningItermRelaxAxesOptionRPYInc" value="4"/>
                                         </select>
+                                        <label for="itermrelaxAxes">
+                                            <span i18n="pidTuningItermRelaxAxes" />
+                                        </label>
                                     </span>
 
                                     <span class="suboption">
-                                        <label for="itermrelaxType">
-                                            <span i18n="pidTuningItermRelaxType" />
-                                        </label>
                                         <select id="itermrelaxType">
                                             <option i18n="pidTuningItermRelaxTypeOptionGyro"     value="0"/> 
                                             <option i18n="pidTuningItermRelaxTypeOptionSetpoint" value="1"/>
                                         </select>
+                                        <label for="itermrelaxType">
+                                            <span i18n="pidTuningItermRelaxType" />
+                                        </label>
                                     </span>
 
                                     <span class="itermRelaxCutoff suboption">
+                                        <input type="number" name="itermRelaxCutoff" step="1" min="1" max="100" />
                                         <label for="itermRelaxCutoff">
                                             <span i18n="pidTuningItermRelaxCutoff" />
                                         </label>
-                                        <input type="number" name="itermRelaxCutoff" step="1" min="1" max="100" />
                                     </span>
                                 </td>
                             </tr>
@@ -536,17 +536,17 @@
                                     </span>
 
                                     <span class="suboption">
+                                        <input type="number" name="dMinGain" step="1" min="0" max="100" />
                                         <label for="dMinGain">
                                             <span i18n="pidTuningDMinGain" />
                                         </label>
-                                        <input type="number" name="dMinGain" step="1" min="0" max="100" />
                                     </span>
 
                                     <span class="suboption">
+                                        <input type="number" name="dMinAdvance" step="1" min="0" max="200" />
                                         <label for="dMinAdvance">
                                             <span i18n="pidTuningDMinAdvance" />
                                         </label>
-                                        <input type="number" name="dMinAdvance" step="1" min="0" max="200" />
                                     </span>
                                 </td>
                             </tr>
@@ -562,27 +562,27 @@
                                         </span>
     
                                         <span class="suboption antiGravityMode">
-                                            <label for="antiGravityMode">
-                                                <span i18n="pidTuningAntiGravityMode" />
-                                            </label>
                                             <select id="antiGravityMode">
                                                 <option i18n="pidTuningAntiGravityModeOptionSmooth"     value="0"/>
                                                 <option i18n="pidTuningAntiGravityModeOptionStep"       value="1"/>
                                             </select>
+                                            <label for="antiGravityMode">
+                                                <span i18n="pidTuningAntiGravityMode" />
+                                            </label>
                                         </span>
     
                                         <span class="suboption">
+                                            <input type="number" name="itermAcceleratorGain" step="0.1" min="1.1" max="30" />
                                             <label for="antiGravityGain">
                                                 <span i18n="pidTuningAntiGravityGain" />
                                             </label>
-                                            <input type="number" name="itermAcceleratorGain" step="0.1" min="1" max="30" />
                                         </span>
 
                                         <span class="suboption antiGravityThres">
+                                            <input type="number" name="itermThrottleThreshold" step="10" min="20" max="1000" />
                                             <label for="antiGravityThres">
                                                 <span i18n="pidTuningAntiGravityThres" />
                                             </label>
-                                            <input type="number" name="itermThrottleThreshold" step="10" min="20" max="1000" />
                                         </span>
                                     </td>
                                 </tr>
@@ -594,7 +594,7 @@
             <!-- RATES SUBTAB -->
             <div class="subtab-rates" style="display: none;">
                 <div class="clear-both"></div>
-                <div class="cf_column half">
+                <div class="cf_column third">
                     <div class="gui_box grey rateSetup">
                         <table id="rateSetup" class="pid_tuning">
                             <tr class="pid_titlebar">
@@ -686,7 +686,7 @@
                     </div>
                 </div>
 
-                <div class="cf_column half right">
+                <div class="cf_column third">
                     <div class="gui_box tpa spacer_left">
                         <table class="cf">
                             <thead>
@@ -760,9 +760,7 @@
                         <table class="cf">
                             <thead>
                                 <tr>
-                                    <th colspan="2">
-                                        <span i18n="pidTuningThrottleCurvePreview" />
-                                    </th>
+                                    <th i18n="pidTuningThrottleCurvePreview" colspan="2"></th>
                                 </tr>
                             </thead>
                             <tr>
@@ -776,23 +774,25 @@
                     </div>
                 </div>
 
-                <div class="gui_box grey">
-                    <table class="pid_titlebar">
-                        <thead>
-                            <tr>
-                                <th i18n="pidTuningRatesPreview"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="rates_preview_cell">
-                                    <div class="rates_preview">
-                                        <canvas id="canvas"></canvas>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <div class="cf_column third">
+                    <div class="gui_box grey spacer_left">
+                        <table class="pid_titlebar">
+                            <thead>
+                                <tr>
+                                    <th i18n="pidTuningRatesPreview"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="rates_preview_cell">
+                                        <div class="rates_preview">
+                                            <canvas id="canvas"></canvas>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
 

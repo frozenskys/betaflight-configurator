@@ -175,7 +175,7 @@ TABS.pid_tuning.initialize = function (callback) {
             antiGravitySwitch.change(function() {
                 var checked = $(this).is(':checked');
                 if (checked) {
-                    $('.antigravity input[name="itermAcceleratorGain"]').val(ADVANCED_TUNING.itermAcceleratorGain / 1000);
+                    $('.antigravity input[name="itermAcceleratorGain"]').val(Math.max(ADVANCED_TUNING.itermAcceleratorGain / 1000, 1.1));
                     $('.antigravity .suboption').show();
                     if (ADVANCED_TUNING.antiGravityMode == 0) {
                         $('.antigravity .antiGravityThres').hide();
@@ -301,7 +301,6 @@ TABS.pid_tuning.initialize = function (callback) {
             $('#pid-tuning .feedforwardTransition').hide();
 
             $('.antigravity antiGravityMode').hide();
-            $('.antigravity antiGravityMode').hide();
         }
 
         if (semver.gte(CONFIG.apiVersion, "1.41.0")) {
@@ -397,9 +396,9 @@ TABS.pid_tuning.initialize = function (callback) {
         dMinSwitch.change(function() {
             var checked = $(this).is(':checked');
             if (checked) {
-                $('.pid_tuning input[name="dMinRoll"]').val(ADVANCED_TUNING.dMinRoll);
-                $('.pid_tuning input[name="dMinPitch"]').val(ADVANCED_TUNING.dMinPitch);
-                $('.pid_tuning input[name="dMinYaw"]').val(ADVANCED_TUNING.dMinYaw);
+                $('.pid_tuning input[name="dMinRoll"]').val(Math.max(ADVANCED_TUNING.dMinRoll, PID_DEFAULT[3]));
+                $('.pid_tuning input[name="dMinPitch"]').val(Math.max(ADVANCED_TUNING.dMinPitch, PID_DEFAULT[8]));
+                $('.pid_tuning input[name="dMinYaw"]').val(Math.max(ADVANCED_TUNING.dMinYaw, PID_DEFAULT[13]));
                 $('.dminGroup .suboption').show();
                 $('#pid_main tr :nth-child(5)').show();
                 $('#pid_main .pid_titlebar2 th').attr('colspan', 6);
