@@ -193,15 +193,14 @@
 
 .tab-pid_tuning table.compensation .suboption {
     margin-left: 2%;
-    white-space: nowrap;
     display: flex;
+    flex-flow: row wrap-reverse;
     align-items: center;
     padding-bottom: 2px;
 }
 
 .tab-pid_tuning table.compensation .suboption select {
-    width: 100%;
-    max-width: 80px;
+    width: 80px;
     text-align-last: right;
     font-size: 1.1em;
     color: darkslategrey;
@@ -881,4 +880,24 @@
 .tab-pid_tuning .subtab-rates .cf_column {
     min-width: 390px;
     flex: 1;
+}
+
+.tab-pid_tuning .subtab-pid {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.tab-pid_tuning .subtab-pid .cf_column {
+    min-width: 500px;
+    flex: 1;
+}
+
+.tab-pid_tuning table.filterTable {
+    table-layout: auto;
+}
+
+.tab-pid_tuning table.filterTable td:first-child {
+    width: 35%;
 }
