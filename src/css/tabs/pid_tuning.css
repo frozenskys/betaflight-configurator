@@ -794,82 +794,6 @@
     width: 120px;
 }
 
-.tab-pid_tuning .slidecontainer {
-    width: 100%;
-}
-
-.tab-pid_tuning .tuningSlider {
-    -webkit-appearance: none;
-    width: calc(100% - 14px);
-    height: 15px;
-    border-radius: 5px;   
-    outline: none;
-    opacity: 0.8;
-    transition: opacity .2s;
-    margin: 7px;
-    background: none;
-}
-
-.tab-pid_tuning .tuningSlider:hover {
-    opacity: 1;
-}
-
-.tab-pid_tuning .tuningSlider::-webkit-slider-runnable-track {
-    -webkit-appearance: none;
-    background: rgba(0,255,0);
-    border-radius: 5px;
-    background: linear-gradient(90deg, rgb(7, 69, 255) 0%, rgb(7, 255, 0) 25%, rgb(255, 184, 0) 50% ,rgb(255, 0, 0) 100%);
-    height: 15px;
-}
-
-.tab-pid_tuning .subtab-pid .tuningSlider::-webkit-slider-runnable-track { 
-    background: linear-gradient(90deg, rgb(167, 255, 204) 0%, rgb(187, 252, 255) 50%, rgb(255, 73, 0) 100%);
-}
-
-.tab-pid_tuning .noBackground .tuningSlider::-webkit-slider-runnable-track {
-    background: rgb(167, 255, 204);
-}
-
-.tab-pid_tuning .tuningSlider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 23px;
-    height: 23px;
-    border-radius: 50%;
-    background: rgb(255, 187, 42);
-    cursor: pointer;
-    position: relative;
-    bottom: 4px;
-}
-
-.tab-pid_tuning .sliderLabels th {
-    background: #828885;
-    color: white;
-    border-right: solid 1px silver;
-}
-
-.tab-pid_tuning .sliderLabels th:last-child {
-    border-right: none;
-}
-
-.tab-pid_tuning .sliderLabels th div div {
-    float: left;
-    width: 50%;
-    margin-left: 25%;
-}
-
-.tab-pid_tuning .sliderLabels th div .helpicon {
-    float: right;
-    width: 14px;
-    margin-left: 0px;
-    margin-top: 1px;
-    opacity: 0.3;
-}
-
-.tab-pid_tuning .sliderLabels span {
-    color:white;
-    font-size: 12px;
-}
-
 .tab-pid_tuning .subtab-rates {
     display: flex;
     flex-flow: row wrap;
@@ -878,7 +802,7 @@
 }
 
 .tab-pid_tuning .subtab-rates .cf_column {
-    min-width: 390px;
+    min-width: 380px;
     flex: 1;
 }
 
