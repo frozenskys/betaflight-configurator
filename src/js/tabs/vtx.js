@@ -140,8 +140,8 @@ TABS.vtx.initialize = function (callback) {
         $("#vtx_low_power_disarm").val(VTX_CONFIG.vtx_low_power_disarm);
 
         // Values of the current values
-        let yesMessage =  i18n.getMessage("vtxOptionYes");
-        let noMessage =  i18n.getMessage("vtxOptionNo");
+        let yesMessage =  i18n.getMessage("yes");
+        let noMessage =  i18n.getMessage("no");
 
         $("#vtx_device_ready_description").text(VTX_CONFIG.vtx_device_ready ? yesMessage : noMessage);
         $("#vtx_type_description").text(i18n.getMessage("vtxType_" + VTX_CONFIG.vtx_type));

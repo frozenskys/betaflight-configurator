@@ -6,6 +6,14 @@
         "message": "Betaflight Configurator",
         "description": "Title of the application window, usually not translated"
     },
+    "yes": {
+        "message": "Yes",
+        "description": "General Yes message to be used across the application"
+    },
+    "no": {
+        "message": "No",
+        "description": "General No message to be used across the application"
+    },
     "error": {
         "message": "Error: {{errorMessage}}"
     },
@@ -3843,12 +3851,6 @@
     "osdSetupCameraConnected": {
         "message": "Camera Connected"
     },
-    "osdSetupCameraConnectedValueYes": {
-        "message": "Yes"
-    },
-    "osdSetupCameraConnectedValueNo": {
-        "message": "No"
-    },
 
     "osdSetupResetText": {
         "message": "Reset OSD to default"
@@ -4870,14 +4872,6 @@
     "vtxLowPowerDisarmOption_2": {
         "message": "On until first arm",
         "description": "One of the options for the Low Power Disarm mode of the VTX"
-    },
-    "vtxOptionYes": {
-        "message": "Yes",
-        "description": "Used in several descriptions in the VTX tab (device ready, pit mode, low power disarm...)"
-    },
-    "vtxOptionNo": {
-        "message": "No",
-        "description": "Used in several descriptions in the VTX tab (device ready, pit mode, low power disarm...)"
     },
     "vtxTable": {
         "message": "VTX Table",
