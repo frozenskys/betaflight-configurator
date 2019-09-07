@@ -40,6 +40,14 @@
     background: #828885;
 }
 
+.tab-auxiliary .mode.disabled .info {
+    background: var(--error);
+    color: var(--quietText);}
+
+.tab-auxiliary .mode.disabled:nth-child(odd) .info {
+    background: var(--error);
+}
+
 #tab-auxiliary-templates {
     display: none;
 }
@@ -247,11 +255,6 @@
 .tab-auxiliary .save_btn a {
     line-height: 28px;
 }
-
-.tab-auxiliary .spacebottom {
-    margin-bottom: 15px;
-}
-
 
 @media only screen and (max-width: 1055px) , only screen and (max-device-width: 1055px) {
     .tab-auxiliary .fixed_band {

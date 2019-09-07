@@ -1,6 +1,7 @@
 body {
     font-family: 'Segoe UI', Tahoma, sans-serif;
     font-size: 12px;
+    background-color: var(--sideBackground);
     color: #303030;
     margin: 10px;
     overflow: hidden;
@@ -103,7 +104,7 @@ body {
 a {
     text-decoration: none;
     color: #000;
-    font-family: 'open_sanssemibold', Arial;
+    font-weigt: bold;
 }
 
 a:hover {
@@ -125,7 +126,6 @@ a:hover {
     border: 1px solid #4c8829;
     color: #fff;
     float: left;
-    font-family: 'open_sansbold', Arial;
     font-size: 12px;
     text-shadow: 0px 1px #00000040;
     display: block;
