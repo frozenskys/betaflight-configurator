@@ -51,14 +51,8 @@ jobs:
       versionSpec: '10.16.3'    
     displayName: 'Install Node.js'
 
-  - script: npm install -g npm@6.0.1
-    displayName: 'Install NPM'
-
-  - script: npm install -g gulp
-    displayName: 'Install Gulp'
-
-  - script: npm install
-    displayName: 'Run npm install'
+  - script: yarn install
+    displayName: 'Run yarn install'
 
   - script: gulp release --linux32 --linux64
     displayName: 'run gulp release'
