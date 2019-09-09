@@ -33,8 +33,8 @@ jobs:
   - script: npm install -g gulp
     displayName: 'Install Gulp'
 
-  - script: npm install
-    displayName: 'Run npm install'
+  - script: yarn install
+    displayName: 'Run yarn install'
 
   - script: gulp release --win32 --win64
     displayName: 'Run gulp release'
