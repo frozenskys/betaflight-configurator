@@ -373,7 +373,6 @@ var FC = {
             digitalIdlePercent:         0,
             gyroUse32kHz:               0,
             motorPwmInversion:          0,
-            gyroToUse:                  0,
             gyroHighFsr:                0,
             gyroMovementCalibThreshold: 0,
             gyroCalibDuration:          0,
@@ -409,6 +408,8 @@ var FC = {
             dyn_notch_width_percent:    0,
             dyn_notch_q:                0,
             dyn_notch_min_hz:           0,
+            gyro_rpm_notch_harmonics:   0,
+            gyro_rpm_notch_min_hz:      0,
         };
 
         ADVANCED_TUNING = {
@@ -550,6 +551,7 @@ var FC = {
             gyro_notch_hz:                  400,
             gyro_notch2_cutoff:             100,
             gyro_notch2_hz:                 200,
+            gyro_rpm_notch_harmonics:         3,
             dterm_lowpass_hz:               100,
             dterm_lowpass_dyn_min_hz:       150,
             dterm_lowpass_dyn_max_hz:       250,
