@@ -10,9 +10,7 @@
 # - File content to variable: https://marketplace.visualstudio.com/items?itemName=maikvandergaag.maikvandergaag-file-to-variable
 
 trigger:
-# TODO: change to master once pull request merged
 - master
-- pidtab
 
 jobs:
 - job: 'Windows'
@@ -69,14 +67,8 @@ jobs:
       versionSpec: '10.16.3'    
     displayName: 'Install Node.js'
 
-  - script: npm install -g npm@6.0.1
-    displayName: 'Install NPM'
-
-  - script: npm install -g gulp
-    displayName: 'Install Gulp'
-
-  - script: npm install
-    displayName: 'Run rpm install'
+  - script: yarn install
+    displayName: 'Run yarn install'
 
   - script: gulp release --osx64
     displayName: 'Run gulp release'
