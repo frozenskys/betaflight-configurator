@@ -15,12 +15,12 @@ trigger:
 stages:
 - stage: Build
   jobs:
-  - job: 'Windows'
 
+  - job: 'Windows'
     pool:
       vmImage: 'vs2017-win2016'
-
     steps:
+
     - task: NodeTool@0
       inputs:
         versionSpec: '10.16.3'    
@@ -79,14 +79,13 @@ stages:
   - job: Release
 
     steps:
-    - task: GitHubRelease@0
-      displayName: 'GitHub release (create)'
+    - task: GitHubRelease@1
       inputs:
         gitHubConnection: 'Frozenskys GitHub'
-        repositoryName: 'frozenskys/betaflight-configurator-nightly'
-        tagSource: manual
-        tag: '$(Build.BuildNumber) '
-        releaseNotesSource: input
-        releaseNotes: '$(Build.BuildNumber) '
-        assets: '$(System.ArtifactsDirectory)/_frozenskys.betaflight-configurator/**'
+        repositoryName: '$(Build.Repository.Name)'
+        action: 'create'
+        target: '$(Build.SourceVersion)'
+        tagSource: 'gitTag'
         isPreRelease: true
+        changeLogCompareToRelease: 'lastFullRelease'
+        changeLogType: 'commitBased'
