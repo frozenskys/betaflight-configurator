@@ -53,4 +53,3 @@ stages:
         isPreRelease: true
         changeLogCompareToRelease: lastNonDraftRelease
         changeLogType: 'commitBased'
-        assets: '$(System.ArtifactsDirectory)/_frozenskys.betaflight-configurator/**'
