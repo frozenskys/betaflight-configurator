@@ -90,15 +90,9 @@ stages:
     #    isPreRelease: true
     #    changeLogCompareToRelease: 'lastFullRelease'
     #    changeLogType: 'commitBased'
-    - task: GitHubRelease@1
+
+    - task: PublishBuildArtifacts@1
       inputs:
-        gitHubConnection: 'Frozenskys GitHub'
-        repositoryName: 'frozenskys/betaflight-configurator-nightly'
-        action: 'create'
-        target: '$(Build.SourceVersion)'
-        tagSource: userSpecifiedTag
-        tag: '$(Build.BuildNumber) '
-        releaseNotesSource: 'inline'
-        releaseNotesInline: 'Nightly Release'
-        isPreRelease: true
-        addChangeLog: false
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        ArtifactName: 'drop'
+        publishLocation: 'Container'
