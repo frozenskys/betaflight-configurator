@@ -34,7 +34,7 @@ stages:
     - task: PublishPipelineArtifact@1
       displayName: 'Publish Windows release'
       inputs:
-        targetPath: '$(Pipeline.Workspace)'
+        targetPath: '$(System.DefaultWorkingDirectory)/release'
         artifact: 'betaflight-configurator-windows'
 
 - stage: Release
@@ -53,3 +53,7 @@ stages:
         isPreRelease: true
         changeLogCompareToRelease: lastNonDraftRelease
         changeLogType: 'commitBased'
+        assets: |
+          $(Build.ArtifactStagingDirectory)/*.exe
+          $(Build.ArtifactStagingDirectory)/*.txt
+          $(Build.ArtifactStagingDirectory)/*.dmg
