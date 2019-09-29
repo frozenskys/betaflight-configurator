@@ -19,60 +19,23 @@ stages:
   - job: 'Windows'
     pool:
       vmImage: 'vs2017-win2016'
-    steps:
 
-    - task: NodeTool@0
+    steps:
+    - task: UseNode@1
       inputs:
-        versionSpec: '10.16.3'    
-      displayName: 'Install Node.js'
+        version: '10.16.3'
+      displayName: 'Install Node.js 10.16.3'
     - script: yarn install
       displayName: 'Run yarn install'
     - script: gulp release --win32 --win64
       displayName: 'Run gulp release'
     - powershell: Set-Content -Path '$(System.DefaultWorkingDirectory)/release/log.txt' -Value $env:BUILD_SOURCEVERSIONMESSAGE
 
-    - task: PublishPipelineArtifact@0
+    - task: PublishPipelineArtifact@1
       displayName: 'Publish Windows release'
-      inputs: 
-        artifactName: betaflight-configurator-windows
-        targetPath: '$(System.DefaultWorkingDirectory)/release'
-
-  - job: 'Linux'
-    pool:
-      vmImage: 'ubuntu-16.04'
-
-    steps:
-    - task: NodeTool@0
       inputs:
-        versionSpec: '10.16.3'    
-      displayName: 'Install Node.js'
-    - script: yarn install
-      displayName: 'Run yarn install'
-    - script: gulp release --linux32 --linux64
-      displayName: 'run gulp release'
-
-
-  - job: 'MacOS'
-    pool:
-      vmImage: 'macos-10.13'
-
-    steps:
-    - task: NodeTool@0
-      inputs:
-        versionSpec: '10.16.3'    
-      displayName: 'Install Node.js'
-    - script: npm install -g gulp
-      displayName: 'Install Gulp'
-    - script: yarn install
-      displayName: 'Run yarn install'
-    - script: gulp release --osx64
-      displayName: 'Run gulp release'
-
-    - task: PublishPipelineArtifact@0
-      displayName: 'Publish MacOS release'
-      inputs: 
-        artifactName: betaflight-configurator-macos
-        targetPath: '$(System.DefaultWorkingDirectory)/release'
+        targetPath: '$(Pipeline.Workspace)'
+        artifact: 'betaflight-configurator-windows'
 
 - stage: Release
   jobs:
@@ -90,3 +53,4 @@ stages:
         isPreRelease: true
         changeLogCompareToRelease: lastNonDraftRelease
         changeLogType: 'commitBased'
+        assets: '$(System.ArtifactsDirectory)/_frozenskys.betaflight-configurator/**'
