@@ -42,6 +42,11 @@ stages:
   - job: Release
 
     steps:
+    - task: DownloadPipelineArtifact@2
+      inputs:
+        buildType: 'current'
+        targetPath: '$(Pipeline.Workspace)'
+        
     - task: GitHubRelease@1
       inputs:
         gitHubConnection: 'Betaflight GitHub'
@@ -55,8 +60,3 @@ stages:
         changeLogType: 'commitBased'
         assets: |
           $(Pipeline.Workspace)
-          $(System.ArtifactsDirectory)/_frozenskys.betaflight-configurator/**
-          $(Build.ArtifactStagingDirectory)/**/*.exe
-          $(System.ArtifactsDirectory)/**/*.exe
-          $(System.ArtifactsDirectory)/**/*.txt
-          $(System.ArtifactsDirectory)/**/*.dmg
