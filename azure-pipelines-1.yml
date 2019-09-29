@@ -78,7 +78,10 @@ stages:
       displayName: 'Publish Linux release'
       inputs: 
         artifactName: betaflight-configurator-linux
-        targetPath: '$(System.DefaultWorkingDirectory)/release'
+        targetPath: |
+          '$(System.DefaultWorkingDirectory)/release/*.rpm'
+          '$(System.DefaultWorkingDirectory)/release/*.zip'
+          '$(System.DefaultWorkingDirectory)/release/*.deb'
 
 
 - stage: Release
