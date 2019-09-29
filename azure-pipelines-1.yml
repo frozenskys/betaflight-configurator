@@ -108,3 +108,4 @@ stages:
         assets: |
           $(Pipeline.Workspace)/betaflight-configurator-windows/**
           $(Pipeline.Workspace)/betaflight-configurator-macos/**
+          $(Pipeline.Workspace)/betaflight-configurator-linux/**
