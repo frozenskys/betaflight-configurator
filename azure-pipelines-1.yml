@@ -58,4 +58,4 @@ stages:
         isPreRelease: true
         changeLogCompareToRelease: lastNonDraftRelease
         changeLogType: 'commitBased'
-        assets: '$(Pipeline.Workspace)'
+        assets: '$(Pipeline.Workspace)/**'
