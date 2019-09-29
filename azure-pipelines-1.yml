@@ -54,6 +54,7 @@ stages:
         changeLogCompareToRelease: lastNonDraftRelease
         changeLogType: 'commitBased'
         assets: |
+          $(Pipeline.Workspace)
           $(System.ArtifactsDirectory)/_frozenskys.betaflight-configurator/**
           $(Build.ArtifactStagingDirectory)/**/*.exe
           $(System.ArtifactsDirectory)/**/*.exe
