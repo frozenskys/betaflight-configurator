@@ -83,7 +83,7 @@ stages:
       displayName: 'GitHub release (create)'
       inputs:
         gitHubConnection: 'Frozenskys GitHub'
-        repositoryName: 'frozenskys/betaflight-configurator'
+        repositoryName: 'frozenskys/betaflight-configurator-nightly'
         tagSource: manual
         tag: '$(Build.BuildNumber) '
         releaseNotesSource: input
