@@ -85,7 +85,8 @@ stages:
         repositoryName: '$(Build.Repository.Name)'
         action: 'create'
         target: '$(Build.SourceVersion)'
-        tagSource: 'gitTag'
+        tagSource: userSpecifiedTag
+        tag: '$(Build.BuildNumber) '
         isPreRelease: true
         changeLogCompareToRelease: 'lastFullRelease'
         changeLogType: 'commitBased'
@@ -95,7 +96,8 @@ stages:
         repositoryName: 'frozenskys/betaflight-configurator-nightly'
         action: 'create'
         target: '$(Build.SourceVersion)'
-        tagSource: 'gitTag'
+        tagSource: userSpecifiedTag
+        tag: '$(Build.BuildNumber) '
         releaseNotesSource: 'inline'
         releaseNotesInline: 'Nightly Release'
         isPreRelease: true
