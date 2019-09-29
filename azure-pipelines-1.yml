@@ -46,7 +46,7 @@ stages:
       inputs:
         buildType: 'current'
         targetPath: '$(Pipeline.Workspace)'
-        
+
     - task: GitHubRelease@1
       inputs:
         gitHubConnection: 'Betaflight GitHub'
@@ -58,5 +58,4 @@ stages:
         isPreRelease: true
         changeLogCompareToRelease: lastNonDraftRelease
         changeLogType: 'commitBased'
-        assets: |
-          $(Pipeline.Workspace)
+        assets: '$(Pipeline.Workspace)'
