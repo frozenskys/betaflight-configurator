@@ -74,8 +74,9 @@ stages:
       displayName: 'Run yarn install'
     - script: gulp release --linux32 --linux64
       displayName: 'Run gulp release'
-    - script: find -mindepth 1 -maxdepth 1 -type d -exec rm -r {} \;
+    - script: cd $(System.DefaultWorkingDirectory)/release; find -mindepth 1 -maxdepth 1 -type d -exec rm -r {} \;
       displayName: 'Clean release folders'
+
     - task: PublishPipelineArtifact@1
       displayName: 'Publish Linux release'
       inputs: 
