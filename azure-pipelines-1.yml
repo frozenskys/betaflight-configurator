@@ -1,0 +1,111 @@
+# Builds Betaflight Configurator on Windows, Linux and OSX platforms.
+#
+# After building, artifacts are released to a seperate repository.
+#
+# Requires Azure Pipelines added to Github repositories:
+# https://azure.microsoft.com/services/devops/pipelines/
+#
+# Azure Pipelines requires tasks to be installed:
+# - Github Release: https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/utility/github-release
+# - File content to variable: https://marketplace.visualstudio.com/items?itemName=maikvandergaag.maikvandergaag-file-to-variable
+
+trigger:
+- master
+
+stages:
+- stage: Build
+  jobs:
+
+  - job: 'Windows'
+    pool:
+      vmImage: 'vs2017-win2016'
+
+    steps:
+    - task: UseNode@1
+      inputs:
+        version: '10.16.3'
+      displayName: 'Install Node.js 10.16.3'
+    - script: yarn install
+      displayName: 'Run yarn install'
+    - script: gulp release --win32 --win64
+      displayName: 'Run gulp release'
+    - powershell: Set-Content -Path '$(System.DefaultWorkingDirectory)/release/log.txt' -Value $env:BUILD_SOURCEVERSIONMESSAGE
+
+    - task: PublishPipelineArtifact@1
+      displayName: 'Publish Windows release'
+      inputs:
+        targetPath: '$(System.DefaultWorkingDirectory)/release'
+        artifact: 'betaflight-configurator-windows'
+
+
+  - job: 'MacOS'
+    pool:
+      vmImage: 'macos-10.13'
+
+    steps:
+    - task: UseNode@1
+      inputs:
+        version: '10.16.3'
+      displayName: 'Install Node.js 10.16.3'
+    - script: npm install -g gulp
+      displayName: 'Install Gulp'
+    - script: yarn install
+      displayName: 'Run yarn install'
+    - script: gulp release --osx64
+      displayName: 'Run gulp release'
+
+    - task: PublishPipelineArtifact@1
+      displayName: 'Publish MacOS release'
+      inputs: 
+          artifactName: betaflight-configurator-macos
+          targetPath: '$(System.DefaultWorkingDirectory)/release'
+
+
+  - job: 'Linux'
+    pool:
+      vmImage: 'ubuntu-16.04'
+
+    steps:
+    - task: UseNode@1
+      inputs:
+        version: '10.16.3'
+      displayName: 'Install Node.js 10.16.3'
+    - script: yarn install
+      displayName: 'Run yarn install'
+    - script: gulp release --linux32 --linux64
+      displayName: 'Run gulp release'
+    - script: cd $(System.DefaultWorkingDirectory)/release; find -mindepth 1 -maxdepth 1 -type d -exec rm -r {} \;
+      displayName: 'Clean release folders'
+
+    - task: PublishPipelineArtifact@1
+      displayName: 'Publish Linux release'
+      inputs: 
+        artifactName: betaflight-configurator-linux
+        targetPath: '$(System.DefaultWorkingDirectory)/release'
+
+
+- stage: Release
+  jobs:
+  - job: Release
+
+    steps:
+    - task: DownloadPipelineArtifact@2
+      inputs:
+        buildType: 'current'
+        targetPath: '$(Pipeline.Workspace)'
+
+    - task: GitHubRelease@1
+      inputs:
+        gitHubConnection: 'Betaflight GitHub'
+        repositoryName: '$(Build.Repository.Name)'
+        action: 'create'
+        target: '$(Build.SourceVersion)'
+        tagSource: userSpecifiedTag
+        tag: '$(Build.BuildNumber) '
+        isPreRelease: true
+        changeLogCompareToRelease: lastNonDraftRelease
+        changeLogType: 'commitBased'
+        assets: |
+          $(Pipeline.Workspace)/betaflight-configurator-windows/**
+          $(Pipeline.Workspace)/betaflight-configurator-macos/**
+          $(Pipeline.Workspace)/betaflight-configurator-linux/**
