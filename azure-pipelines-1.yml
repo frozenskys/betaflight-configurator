@@ -54,6 +54,6 @@ stages:
         changeLogCompareToRelease: lastNonDraftRelease
         changeLogType: 'commitBased'
         assets: |
-          $(Build.ArtifactStagingDirectory)/*.exe
-          $(Build.ArtifactStagingDirectory)/*.txt
-          $(Build.ArtifactStagingDirectory)/*.dmg
+          $(System.ArtifactsDirectory)/**/*.exe
+          $(System.ArtifactsDirectory)/**/*.txt
+          $(System.ArtifactsDirectory)/**/*.dmg
