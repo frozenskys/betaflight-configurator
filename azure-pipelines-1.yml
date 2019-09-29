@@ -89,3 +89,14 @@ stages:
         isPreRelease: true
         changeLogCompareToRelease: 'lastFullRelease'
         changeLogType: 'commitBased'
+    - task: GitHubRelease@1
+      inputs:
+        gitHubConnection: 'Frozenskys GitHub'
+        repositoryName: 'frozenskys/betaflight-configurator-nightly'
+        action: 'create'
+        target: '$(Build.SourceVersion)'
+        tagSource: 'gitTag'
+        releaseNotesSource: 'inline'
+        releaseNotesInline: 'Nightly Release'
+        isPreRelease: true
+        addChangeLog: false
