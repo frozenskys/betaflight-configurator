@@ -109,3 +109,9 @@ stages:
           $(Pipeline.Workspace)/betaflight-configurator-windows/**
           $(Pipeline.Workspace)/betaflight-configurator-macos/**
           $(Pipeline.Workspace)/betaflight-configurator-linux/**
+
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Pipeline.Workspace)'
+        ArtifactName: 'betaflight-configurator-windows'
+        publishLocation: 'Container'
