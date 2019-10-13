@@ -55,3 +55,12 @@ stages:
         feedsToUsePublish: 'internal'
         vstsFeedPublish: '595f808f-d56e-4ae9-b15e-826186fc8c78'
         versionOption: 'patch'
+
+    - task: UniversalPackages@0
+      inputs:
+        command: 'publish'
+        publishDirectory: '$(Build.ArtifactStagingDirectory)'
+        feedsToUsePublish: 'internal'
+        vstsFeedPublish: '9517df47-b1ca-45a7-9562-fc5f3cef858a'
+        versionOption: 'patch'
+        packagePublishDescription: 'Windows Build'
