@@ -47,10 +47,13 @@ stages:
       inputs:
         buildType: 'current'
         targetPath: '$(Pipeline.Workspace)'
+
     - task: GitHubReleasePublish@1
       inputs:
         githubEndpoint: 'Frozenskys GitHub'
-        manuallySetRepository: false
+        manuallySetRepository: true
+        githubOwner: 'frozenskys'
+        githubRepositoryName: 'betaflight-configurator-nightly'
         githubReleaseDraft: false
         githubReleasePrerelease: true
         githubIgnoreAssets: false
