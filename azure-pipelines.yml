@@ -34,6 +34,11 @@ stages:
         targetPath: '$(System.DefaultWorkingDirectory)/release'
         artifact: 'betaflight-configurator-windows'
 
+    - task: FileContenttoVariable@2
+      inputs:
+        FilePath: '$(Pipeline.Workspace)/betaflight-configurator-windows/log.txt'
+        VariableName: 'releaseNotes'
+
   - job: 'MacOS'
     pool:
       vmImage: 'macos-10.13'
@@ -88,11 +93,6 @@ stages:
       inputs:
         buildType: 'current'
         targetPath: '$(Pipeline.Workspace)'
-
-    - task: FileContenttoVariable@2
-      inputs:
-        FilePath: '$(Pipeline.Workspace)/betaflight-configurator-windows/log.txt'
-        VariableName: 'releaseNotes'
 
 #requires the "GitHub Tool" Extension by Marcelo Formentão
 #you'll also need to setup three pipeline variables "endpoint", "owner" and "repoName"
