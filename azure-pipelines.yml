@@ -33,7 +33,6 @@ stages:
     - script: yarn gulp release --win32 --win64
       displayName: 'Run gulp release'
     - powershell: Set-Content -Path '$(System.DefaultWorkingDirectory)/release/log.txt' -Value $env:BUILD_SOURCEVERSIONMESSAGE
-    - powershell: $env:releaseNotes = $env:BUILD_SOURCEVERSIONMESSAGE
 
     - task: PublishPipelineArtifact@1
       displayName: 'Publish Windows release'
@@ -100,9 +99,8 @@ stages:
       inputs:
         buildType: 'current'
         targetPath: '$(Pipeline.Workspace)'
+    - powershell: Write-Output ("##vso[task.setvariable variable=releaseNotes;]$(gc $(Pipeline.Workspace)/betaflight-configurator-windows/log.txt)")
 
-#requires the "GitHub Tool" Extension by Marcelo Formentão
-#you'll also need to setup three pipeline variables "endpoint", "owner" and "repoName"
     - task: GitHubReleasePublish@1
       inputs:
         githubEndpoint: '$(endpoint)'
