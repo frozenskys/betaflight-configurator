@@ -5,6 +5,12 @@
 # Azure Pipelines requires tasks to be installed:
 # - File content to variable: https://marketplace.visualstudio.com/items?itemName=maikvandergaag.maikvandergaag-file-to-variable
 # - GitHub Tool: https://marketplace.visualstudio.com/items?itemName=marcelo-formentao.github-tools
+#
+# You'll also need to setup the follwing pipeline variables: 
+#     "releaseNotes" - This is used to add the release notes in the windows job so they can be published as part of the github release
+#     "endpoint" - The name of the github endpoint setup in AzDo
+#     "owner" - The owner of the repository to release to
+#     "repoName" - The name of the repository to release to
 
 trigger:
 - master
