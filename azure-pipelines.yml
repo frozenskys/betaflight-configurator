@@ -48,14 +48,16 @@ stages:
         buildType: 'current'
         targetPath: '$(Pipeline.Workspace)'
 
+#requires the "GitHub Tool" Extension by Marcelo Formentão
+#you'll also need to setup two pipeline variables "owner" and "repoName"
     - task: GitHubReleasePublish@1
       inputs:
         githubEndpoint: 'Frozenskys GitHub'
         manuallySetRepository: true
-        githubOwner: 'frozenskys'
-        githubRepositoryName: 'betaflight-configurator-nightly'
+        githubOwner: '$(owner)'
+        githubRepositoryName: '$(repoName)'
         githubReleaseDraft: false
-        githubReleasePrerelease: true
+        githubReleasePrerelease: false
         githubIgnoreAssets: false
         githubReleaseAsset: '$(Pipeline.Workspace)/betaflight-configurator-windows/**'
         githubReuseRelease: true
