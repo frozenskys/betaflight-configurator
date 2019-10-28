@@ -36,7 +36,7 @@ stages:
 
     - task: FileContenttoVariable@2
       inputs:
-        FilePath: '$(Pipeline.Workspace)/betaflight-configurator-windows/log.txt'
+        FilePath: '$(System.DefaultWorkingDirectory)/release/log.txt'
         VariableName: 'releaseNotes'
 
   - job: 'MacOS'
