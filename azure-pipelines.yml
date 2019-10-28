@@ -89,6 +89,10 @@ stages:
         buildType: 'current'
         targetPath: '$(Pipeline.Workspace)'
 
+    - task: FileContenttoVariable@2
+      inputs:
+        FilePath: '$(Pipeline.Workspace)/betaflight-configurator-windows/log.txt'
+        VariableName: 'releaseNotes'
 
 #requires the "GitHub Tool" Extension by Marcelo Formentão
 #you'll also need to setup three pipeline variables "endpoint", "owner" and "repoName"
@@ -98,6 +102,7 @@ stages:
         manuallySetRepository: true
         githubOwner: '$(owner)'
         githubRepositoryName: '$(repoName)'
+        githubReleaseNotes: '$(releaseNotes)'
         githubReleaseDraft: false
         githubReleasePrerelease: false
         githubIgnoreAssets: false
