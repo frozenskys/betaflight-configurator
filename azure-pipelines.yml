@@ -12,7 +12,7 @@
 #     "owner" - The owner of the repository to release to
 #     "repoName" - The name of the repository to release to
 
-name: (TeamProject)_$(BuildDefinitionName)_$(SourceBranchName)_$(Date:yyyyMMdd).$(BuildID).$(Rev:.r)
+name: $(Date:yyyyMMdd).$(BuildID)
 trigger:
 - master
 
