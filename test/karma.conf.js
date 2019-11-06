@@ -1,5 +1,6 @@
 module.exports = function(config) {
     config.set({
+        reporters: ['junit'],
         basePath: '../',
         frameworks: ['mocha', 'chai', 'sinon-chai'],
         files: [
@@ -21,6 +22,11 @@ module.exports = function(config) {
                 flags: ['--no-sandbox']
             }
         },
-        singleRun: true
+        junitReporter: {
+            outputDir: './test_results/', 
+            outputFile: 'TEST_RESULTS.xml',
+            useBrowserName: false,
+        },
+        singleRun: true,
     });
 };
