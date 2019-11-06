@@ -3055,14 +3055,6 @@ karma-chrome-launcher@^3.0.0:
   dependencies:
     which "^1.2.1"
 
-karma-junit-reporter@^2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/karma-junit-reporter/-/karma-junit-reporter-2.0.1.tgz#d34eef7f0b2fd064e0896954e8851a90cf14c8f3"
-  integrity sha512-VtcGfE0JE4OE1wn0LK8xxDKaTP7slN8DO3I+4xg6gAi1IoAHAXOJ1V9G/y45Xg6sxdxPOR3THCFtDlAfBo9Afw==
-  dependencies:
-    path-is-absolute "^1.0.0"
-    xmlbuilder "12.0.0"
-
 karma-mocha@^1.3.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/karma-mocha/-/karma-mocha-1.3.0.tgz#eeaac7ffc0e201eb63c467440d2b69c7cf3778bf"
@@ -3079,6 +3071,16 @@ karma-sinon@^1.0.5:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/karma-sinon/-/karma-sinon-1.0.5.tgz#4e3443f2830fdecff624d3747163f1217daa2a9a"
   integrity sha1-TjRD8oMP3s/2JNN0cWPxIX2qKpo=
+
+karma-tfs-reporter@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/karma-tfs-reporter/-/karma-tfs-reporter-1.0.2.tgz#2e3c3e448fc71dd4bbdd0af8a7a1ba7b1043361f"
+  integrity sha512-kKcIN2gBRt2XyAopV9d7xwmFoKFQt+J+KPHcHUqngeMpLp8LdXbS+aCMdzAK6garV4cSBitWVqoS9IeOZPYWOw==
+  dependencies:
+    dateformat "^2.0.0"
+    mkpath "^1.0.0"
+    node-uuid "^1.4.7"
+    xmlbuilder "^9.0.0"
 
 karma@^4.0.1:
   version "4.2.0"
@@ -3592,6 +3594,11 @@ mkdirp@0.5.1, mkdirp@^0.5.0, mkdirp@^0.5.1:
   dependencies:
     minimist "0.0.8"
 
+mkpath@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/mkpath/-/mkpath-1.0.0.tgz#ebb3a977e7af1c683ae6fda12b545a6ba6c5853d"
+  integrity sha1-67Opd+evHGg65v2hK1Raa6bFhT0=
+
 mocha@^6.1.4:
   version "6.2.0"
   resolved "https://registry.yarnpkg.com/mocha/-/mocha-6.2.0.tgz#f896b642843445d1bb8bca60eabd9206b8916e56"
@@ -3766,6 +3773,11 @@ node-pre-gyp@^0.12.0:
     rimraf "^2.6.1"
     semver "^5.3.0"
     tar "^4"
+
+node-uuid@^1.4.7:
+  version "1.4.8"
+  resolved "https://registry.yarnpkg.com/node-uuid/-/node-uuid-1.4.8.tgz#b040eb0923968afabf8d32fb1f17f1167fdab907"
+  integrity sha1-sEDrCSOWivq/jTL7HxfxFn/auQc=
 
 nopt@^4.0.1:
   version "4.0.1"
@@ -5760,12 +5772,7 @@ xdg-basedir@^3.0.0:
   resolved "https://registry.yarnpkg.com/xdg-basedir/-/xdg-basedir-3.0.0.tgz#496b2cc109eca8dbacfe2dc72b603c17c5870ad4"
   integrity sha1-SWsswQnsqNus/i3HK2A8F8WHCtQ=
 
-xmlbuilder@12.0.0:
-  version "12.0.0"
-  resolved "https://registry.yarnpkg.com/xmlbuilder/-/xmlbuilder-12.0.0.tgz#e2ed675e06834a089ddfb84db96e2c2b03f78c1a"
-  integrity sha512-lMo8DJ8u6JRWp0/Y4XLa/atVDr75H9litKlb2E5j3V3MesoL50EBgZDWoLT3F/LztVnG67GjPXLZpqcky/UMnQ==
-
-xmlbuilder@^9.0.7:
+xmlbuilder@^9.0.0, xmlbuilder@^9.0.7:
   version "9.0.7"
   resolved "https://registry.yarnpkg.com/xmlbuilder/-/xmlbuilder-9.0.7.tgz#132ee63d2ec5565c557e20f4c22df9aca686b10d"
   integrity sha1-Ey7mPS7FVlxVfiD0wi35rKaGsQ0=

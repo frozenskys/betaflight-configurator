@@ -1,6 +1,6 @@
 module.exports = function(config) {
     config.set({
-        reporters: ['junit'],
+        reporters: ['tfs'],
         basePath: '../',
         frameworks: ['mocha', 'chai', 'sinon-chai'],
         files: [
@@ -22,10 +22,9 @@ module.exports = function(config) {
                 flags: ['--no-sandbox']
             }
         },
-        junitReporter: {
-            outputDir: './test_results/', 
-            outputFile: 'TEST_RESULTS.xml',
-            useBrowserName: false,
+        tfsReporter: {
+            outputDir: 'testresults',
+            outputFile: 'testresults_${date}.xml'
         },
         singleRun: true,
     });
