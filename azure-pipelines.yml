@@ -31,36 +31,16 @@ stages:
       displayName: 'Install Node.js 10.16.3'
     - script: yarn install
       displayName: 'Run yarn install'
-    - script: yarn gulp release --win32 --win64
-      displayName: 'Run gulp release'
+    - script: yarn test
+      displayName: 'Run yarn test'
+    - script: yarn gulp release --win32
+      displayName: 'Run yarn gulp release for win32'
     - powershell: Set-Content -Path '$(System.DefaultWorkingDirectory)/release/log.txt' -Value $env:BUILD_SOURCEVERSIONMESSAGE
     - task: PublishPipelineArtifact@1
       displayName: 'Publish Windows release'
       inputs:
         targetPath: '$(System.DefaultWorkingDirectory)/release'
         artifact: 'betaflight-configurator-windows'
-
-  - job: 'MacOS'
-    pool:
-      vmImage: 'macos-10.13'
-
-    steps:
-    - task: UseNode@1
-      inputs:
-        version: '10.16.3'
-      displayName: 'Install Node.js 10.16.3'
-    - script: npm install -g gulp
-      displayName: 'Install Gulp'
-    - script: yarn install
-      displayName: 'Run yarn install'
-    - script: yarn gulp release --osx64
-      displayName: 'Run gulp release'
-
-    - task: PublishPipelineArtifact@1
-      displayName: 'Publish MacOS release'
-      inputs: 
-          artifactName: betaflight-configurator-macos
-          targetPath: '$(System.DefaultWorkingDirectory)/release'
 
   - job: 'Linux'
     pool:
@@ -73,8 +53,12 @@ stages:
       displayName: 'Install Node.js 10.16.3'
     - script: yarn install
       displayName: 'Run yarn install'
-    - script: yarn gulp release --linux32 --linux64
-      displayName: 'Run gulp release'
+    - script: yarn  test
+      displayName: 'Run yarn test'
+    - script: yarn gulp release --linux32
+      displayName: 'Run yarn gulp release for linux32'
+    - script: yarn gulp release --chromeos
+      displayName: 'Run gulp release for chromeos'
     - script: cd $(System.DefaultWorkingDirectory)/release; find -mindepth 1 -maxdepth 1 -type d -exec rm -r {} \;
       displayName: 'Clean release folders'
 
@@ -83,54 +67,3 @@ stages:
       inputs: 
         artifactName: betaflight-configurator-linux
         targetPath: '$(System.DefaultWorkingDirectory)/release'
-
-
-- stage: Release
-  jobs:
-  - job: Release
-
-    steps:
-    - task: DownloadPipelineArtifact@2
-      inputs:
-        buildType: 'current'
-        targetPath: '$(Pipeline.Workspace)'
-    - powershell: Write-Output ("##vso[task.setvariable variable=releaseNotes;]$(gc $(Pipeline.Workspace)/betaflight-configurator-windows/log.txt)")
-
-    - task: XplatGenerateReleaseNotes@2
-      inputs:
-        outputfile: '$(System.DefaultWorkingDirectory)/release/release_notes.md'
-        templateLocation: 'InLine'
-        inlinetemplate: |
-          # Release notes
-          ## Notes for release  ${releaseDetails.releaseDefinition.name}
-          **Release Number**  : ${releaseDetails.name}
-          **Release completed** : ${releaseDetails.modifiedOn}
-          **Compared Release Number**  : ${compareReleaseDetails.name}
-          
-          
-          ### Associated commits
-          @@CSLOOP@@
-          * **ID ${csdetail.id} ** ${csdetail.message}
-          @@CSLOOP@@
-        delimiter: ':'
-
-
-    - task: GitHubReleasePublish@1
-      inputs:
-        githubEndpoint: '$(endpoint)'
-        manuallySetRepository: true
-        githubOwner: '$(owner)'
-        githubRepositoryName: '$(repoName)'
-        githubReleaseNotes: '$(releaseNotes)'
-        githubReleaseDraft: false
-        githubReleasePrerelease: false
-        githubIgnoreAssets: false
-        githubReleaseAsset: |
-          $(Pipeline.Workspace)/betaflight-configurator-windows/**
-          $(Pipeline.Workspace)/betaflight-configurator-macos/**
-          $(Pipeline.Workspace)/betaflight-configurator-linux/**
-        githubReuseRelease: true
-        githubReuseDraftOnly: true
-        githubSkipDuplicatedAssets: false
-        githubEditRelease: false
-        githubDeleteEmptyTag: false
