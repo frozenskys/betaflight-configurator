@@ -62,8 +62,6 @@ stages:
       displayName: 'Run yarn test'
     - script: yarn gulp release --linux32
       displayName: 'Run yarn gulp release for linux32'
-    - script: yarn gulp release --chromeos
-      displayName: 'Run gulp release for chromeos'
     - script: cd $(System.DefaultWorkingDirectory)/release; find -mindepth 1 -maxdepth 1 -type d -exec rm -r {} \;
       displayName: 'Clean release folders'
 
