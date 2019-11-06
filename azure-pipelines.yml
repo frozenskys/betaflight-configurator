@@ -31,7 +31,7 @@ stages:
       displayName: 'Install Node.js 10.16.3'
     - script: yarn install
       displayName: 'Run yarn install'
-    - script: yarn test
+    - script: yarn test --reporter karma-junit-reporter
       displayName: 'Run yarn test'
     - script: yarn gulp release --win32
       displayName: 'Run yarn gulp release for win32'
@@ -41,6 +41,11 @@ stages:
       inputs:
         targetPath: '$(System.DefaultWorkingDirectory)/release'
         artifact: 'betaflight-configurator-windows'
+    - task: PublishTestResults@2
+      condition: succeededOrFailed()
+      inputs:
+        testRunner: JUnit
+        testResultsFiles: '**/TEST-RESULTS.xml'
 
   - job: 'Linux'
     pool:
