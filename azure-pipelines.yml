@@ -31,7 +31,7 @@ stages:
       displayName: 'Install Node.js 10.16.3'
     - script: yarn install
       displayName: 'Run yarn install'
-    - script: yarn test --reporter karma-junit-reporter
+    - script: yarn test
       displayName: 'Run yarn test'
     - script: yarn gulp release --win32
       displayName: 'Run yarn gulp release for win32'
@@ -44,8 +44,9 @@ stages:
     - task: PublishTestResults@2
       condition: succeededOrFailed()
       inputs:
-        testRunner: JUnit
+        testResultsFormat: 'VSTest'
         testResultsFiles: '**/test_results.xml'
+        buildPlatform: 'Win32'
 
   - job: 'Linux'
     pool:
