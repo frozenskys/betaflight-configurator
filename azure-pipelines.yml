@@ -42,11 +42,12 @@ stages:
         targetPath: '$(System.DefaultWorkingDirectory)/release'
         artifact: 'betaflight-configurator-windows'
     - task: PublishTestResults@2
-      condition: succeededOrFailed()
       inputs:
         testResultsFormat: 'VSTest'
         testResultsFiles: '**/test_results.xml'
+        testRunTitle: 'Windows'
         buildPlatform: 'Win32'
+
 
   - job: 'Linux'
     pool:
@@ -75,4 +76,5 @@ stages:
       inputs:
         testResultsFormat: 'VSTest'
         testResultsFiles: '**/test_results.xml'
+        testRunTitle: 'Linux'
         buildPlatform: 'Linux32'
