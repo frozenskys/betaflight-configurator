@@ -75,4 +75,4 @@ stages:
       inputs:
         testResultsFormat: 'VSTest'
         testResultsFiles: '**/test_results.xml'
-        buildPlatform: 'Win32'
+        buildPlatform: 'Linux32'
