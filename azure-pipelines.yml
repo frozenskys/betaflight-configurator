@@ -65,9 +65,14 @@ stages:
       displayName: 'Run yarn gulp release for linux32'
     - script: cd $(System.DefaultWorkingDirectory)/release; find -mindepth 1 -maxdepth 1 -type d -exec rm -r {} \;
       displayName: 'Clean release folders'
-
     - task: PublishPipelineArtifact@1
       displayName: 'Publish Linux release'
       inputs: 
         artifactName: betaflight-configurator-linux
         targetPath: '$(System.DefaultWorkingDirectory)/release'
+    - task: PublishTestResults@2
+      condition: succeededOrFailed()
+      inputs:
+        testResultsFormat: 'VSTest'
+        testResultsFiles: '**/test_results.xml'
+        buildPlatform: 'Win32'
